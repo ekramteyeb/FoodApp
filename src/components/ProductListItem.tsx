@@ -4,17 +4,20 @@ import EditScreenInfo from '@/src/components/EditScreenInfo';
 import { Text, View } from '@/src/components/Themed';
 import Colors from '@/src/constants/Colors';
 import products from '@/assets/data/products';
+import React from 'react';
+import tw from 'twrnc'
 
 type ProductListItemType = {
   name: string,
   price: number, 
   image: string
 }
+export const defaultImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/margarita.png'
 
 const ProductListItem = ({product} : {product:ProductListItemType}) => {
   return (
     <View style={styles.container}>
-      <Image src={`${product.image}`} style={styles.image } />
+      <Image source={{ uri:product.image ||  defaultImage }} style={[tw`bg-red-300`, styles.image]} />
       <Text style={styles.title}>{product.name} </Text>
       <Text style={styles.price}>${product.price }</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
@@ -33,7 +36,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    aspectRatio:1
+    aspectRatio: 1,
+    backgroundColor:'white'
   },
   title: {
     fontSize: 18,
