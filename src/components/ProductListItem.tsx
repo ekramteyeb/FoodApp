@@ -1,5 +1,5 @@
-import { StyleSheet, Image } from 'react-native';
-
+import { StyleSheet, Image, Pressable } from 'react-native';
+import { Link } from 'expo-router'
 import EditScreenInfo from '@/src/components/EditScreenInfo';
 import { Text, View } from '@/src/components/Themed';
 import Colors from '@/src/constants/Colors';
@@ -8,20 +8,23 @@ import React from 'react';
 import tw from 'twrnc'
 
 type ProductListItemType = {
+  id: number,
   name: string,
   price: number, 
   image: string
 }
 export const defaultImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/margarita.png'
+export const defaultImage1 = 'https://picsum.photos/1920/1080?random=1'
 
 const ProductListItem = ({product} : {product:ProductListItemType}) => {
   return (
-    <View style={styles.container}>
-      <Image source={{ uri:product.image ||  defaultImage }} style={[tw`bg-red-300`, styles.image]} />
-      <Text style={styles.title}>{product.name} </Text>
-      <Text style={styles.price}>${product.price }</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
+    <Link href={`/menu/${product.id}`} asChild>
+      <Pressable style={styles.container}>
+        <Image source={{ uri: product.image ||  defaultImage }} style={[tw`bg-red-300`, styles.image]} />
+        <Text style={styles.title}>{product.name} </Text>
+        <Text style={styles.price}>${product.price }</Text>
+      </Pressable>
+    </Link>
 
   )
 }
@@ -30,14 +33,18 @@ export default ProductListItem
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
-    backgroundColor:'white'
+    backgroundColor: 'white',
+    flex: 1,
+    maxWidth:'50%'
   },
   image: {
     width: '100%',
     aspectRatio: 1,
-    backgroundColor:'white'
+    backgroundColor: 'white',
+    resizeMode: 'cover',
+    /* borderRadius:100 */
   },
   title: {
     fontSize: 18,

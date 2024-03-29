@@ -1,29 +1,6 @@
-import { StyleSheet, ScrollView } from 'react-native';
+import { Redirect } from "expo-router";
+import React from "react";
 
-import { Text, View } from '@/src/components/Themed';
-import ProductListItem from '@/src/components/ProductListItem';
-
-import Colors from '@/src/constants/Colors';
-import products from '@/assets/data/products';
-import React from 'react';
- 
-export default function MenuScreen() {
-  
-  return (
-    <ScrollView>
-      
-      {
-        products && products.map(pro => <ProductListItem key={pro.id} product={pro}/>)
-      }
-    </ScrollView>
-  );
+export default function TabIndex() {
+    return <Redirect href={'/menu/'} />
 }
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 20,
-    padding: 10,
-    backgroundColor:'white'
-  },
-  
-});
