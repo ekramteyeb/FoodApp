@@ -1,9 +1,10 @@
 import { StyleSheet, Image, Pressable } from 'react-native';
-import { Link } from 'expo-router'
+import { Link, useSegments } from 'expo-router'
 import EditScreenInfo from '@/src/components/EditScreenInfo';
 import { Text, View } from '@/src/components/Themed';
 import Colors from '@/src/constants/Colors';
 import products from '@/assets/data/products';
+
 
 import React from 'react';
 import tw from 'twrnc'
@@ -18,8 +19,10 @@ export const defaultImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com
 export const defaultImage1 = 'https://picsum.photos/1920/1080?random=1'
 
 const ProductListItem = ({product} : {product:ProductListItemType}) => {
+  const segments = useSegments()
+ 
   return (
-    <Link href={`/menu/${product.id}`} asChild>
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image source={{ uri: product.image ||  defaultImage }} style={[tw`bg-red-300`, styles.image]} />
         <Text style={styles.title}>{product.name} </Text>

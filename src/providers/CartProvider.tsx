@@ -55,7 +55,8 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
     */
   }
 
-  const total = items.reduce((sum, item) => (sum += item.product.price), 0)
+  const total = items.reduce((sum, item) => (sum += item.product.price * item.quantity), 0)
+  
   
   return (
     <CartContext.Provider value={{ items ,addItem, total, updateQuantity }}>
