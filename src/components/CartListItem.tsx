@@ -32,7 +32,7 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
           onPress={() => updateQuantity(cartItem.id, -1)}
           name="minus"
           color="gray"
-          style={{ padding: 5 }}
+          style={{ padding: 10, fontSize:20, backgroundColor:'lightgray', borderRadius:100, aspectRatio:1 }}
         />
 
         <Text style={styles.quantity}>{cartItem.quantity}</Text>
@@ -40,7 +40,7 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
           onPress={() => updateQuantity(cartItem.id, 1)}
           name="plus"
           color="gray"
-          style={{ padding: 5 }}
+          style={{ padding: 10 ,fontSize:20, backgroundColor:'lightblue', borderRadius:100, aspectRatio:1 }}
         />
       </View>
     </View>
