@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View , TextInput, Image } from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { Stack } from 'expo-router'
 import Button from '@/src/components/Button'
 import { defaultImage } from '@/src/components/ProductListItem'
 import Colors from '@/src/constants/Colors'
@@ -59,6 +60,7 @@ export default function createProduct() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ title: 'Create product' }}/>
       <Image source={{ uri: image || defaultImage }} style={styles.image} />
       <Text style={styles.pickImageText} onPress={pickImage}>Select image</Text>
       <Text style={styles.label}>Name</Text>
@@ -106,12 +108,13 @@ const styles = StyleSheet.create({
     width: '50%',
     aspectRatio: 1, 
     alignSelf: 'center', 
-    borderRadius: 100
+    borderRadius: 100,
+    margin:10
   },
   pickImageText: {
     color: Colors.light.tint,
     fontWeight: '500',
-    fontSize: 18, 
+    fontSize: 20, 
     alignSelf: 'center',
     margin: 10
 
