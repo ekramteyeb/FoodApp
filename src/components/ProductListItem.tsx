@@ -18,7 +18,8 @@ type ProductListItemType = {
 export const defaultImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/margarita.png'
 export const defaultImage1 = 'https://picsum.photos/1920/1080?random=1'
 
-const ProductListItem = ({product} : {product:ProductListItemType}) => {
+const ProductListItem = ({ product }: { product: ProductListItemType }) => {
+  
   const segments = useSegments()
  
   return (
