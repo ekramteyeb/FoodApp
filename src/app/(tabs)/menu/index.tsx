@@ -1,5 +1,4 @@
 import { StyleSheet, ScrollView, FlatList } from 'react-native';
-
 import { Text, View } from '@/src/components/Themed';
 import ProductListItem from '@/src/components/ProductListItem';
 
@@ -17,7 +16,6 @@ export default function MenuScreen() {
       contentContainerStyle={{ gap: 10, padding:10 }} //horizontal gap
       columnWrapperStyle={{ gap:10 }}
     />
-   
   );
 }
 
