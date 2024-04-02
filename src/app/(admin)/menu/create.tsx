@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View , TextInput, Image } from 'react-native'
+import { StyleSheet, Text, View , TextInput, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { Stack } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import Button from '@/src/components/Button'
 import { defaultImage } from '@/src/components/ProductListItem'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
+
 
 export default function createProduct() {
   const [name, setName] = useState('')
@@ -12,6 +13,10 @@ export default function createProduct() {
   const [error, setError] = useState<string | null>(null)
   const [image, setImage] = useState<string | null>(null);
 
+  const { id } = useLocalSearchParams()
+  const isUpdating = !!id;
+  
+  
   const validateInput = () => {
     setError('')
     if (!name) {
@@ -53,6 +58,38 @@ export default function createProduct() {
     resetFields()
   }
 
+   const onUpdate = () => {
+    if (!validateInput()) {
+      return 
+    }
+    console.warn('Updating product' + price + ' ' + name)
+    resetFields()
+   }
+  
+  const onDelete = () => {
+    console.warn('DELETEEEEE !!!!!')
+  }
+  const confirmDelete = () => {
+    Alert.alert('Confirm', 'Are you sure you wanna delete this product', [
+      {
+        text:'Cancel'
+      }, 
+      {
+        text: 'Delete', 
+        style: 'destructive',
+        onPress: onDelete
+      }
+    ])
+  }
+  
+  const onSubmit = () => {
+    if (isUpdating) {
+      onUpdate()
+    } else {
+      onCreate()
+    }
+  }
+
   const resetFields = () => {
     setName('')
     setPrice('')
@@ -60,7 +97,7 @@ export default function createProduct() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Create product' }}/>
+      <Stack.Screen options={{ title: isUpdating ? 'Update product' :  'Create product' }}/>
       <Image source={{ uri: image || defaultImage }} style={styles.image} />
       <Text style={styles.pickImageText} onPress={pickImage}>Select image</Text>
       <Text style={styles.label}>Name</Text>
@@ -81,7 +118,8 @@ export default function createProduct() {
       />
       
       <Text style={{ color:'red', fontSize: 16 }}>{ error}</Text>
-      <Button text="Create" onPress={onCreate}/>
+      <Button text={isUpdating ? "Update " : "Create"} onPress={onSubmit} />
+      <Text style={styles.deleteBtn} onPress={confirmDelete}>Delete</Text>
     </View>
   )
 }
@@ -117,7 +155,12 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     alignSelf: 'center',
     margin: 10
-
-  
+  },
+  deleteBtn: {
+    fontSize: 20, 
+    marginVertical: 5, 
+    alignSelf: 'center',
+    color: Colors.light.tint,
+    fontWeight:'500'
   }
 })
