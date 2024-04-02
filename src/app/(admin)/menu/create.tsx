@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View , TextInput, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import Button from '@/src/components/Button'
 import { defaultImage } from '@/src/components/ProductListItem'
 import Colors from '@/src/constants/Colors'
@@ -13,6 +13,8 @@ export default function createProduct() {
   const [error, setError] = useState<string | null>(null)
   const [image, setImage] = useState<string | null>(null);
 
+  const router = useRouter()
+  
   const { id } = useLocalSearchParams()
   const isUpdating = !!id;
   
@@ -68,6 +70,7 @@ export default function createProduct() {
   
   const onDelete = () => {
     console.warn('DELETEEEEE !!!!!')
+    router.push('/(admin)/menu/')
   }
   const confirmDelete = () => {
     Alert.alert('Confirm', 'Are you sure you wanna delete this product', [
@@ -119,7 +122,7 @@ export default function createProduct() {
       
       <Text style={{ color:'red', fontSize: 16 }}>{ error}</Text>
       <Button text={isUpdating ? "Update " : "Create"} onPress={onSubmit} />
-      <Text style={styles.deleteBtn} onPress={confirmDelete}>Delete</Text>
+      {isUpdating && <Text style={styles.deleteBtn} onPress={confirmDelete}>Delete</Text>}
     </View>
   )
 }
@@ -157,10 +160,10 @@ const styles = StyleSheet.create({
     margin: 10
   },
   deleteBtn: {
-    fontSize: 20, 
+    fontSize: 18, 
     marginVertical: 5, 
     alignSelf: 'center',
-    color: Colors.light.tint,
+    color: 'red',
     fontWeight:'500'
   }
 })

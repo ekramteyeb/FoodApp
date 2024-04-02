@@ -14,7 +14,7 @@ const ProductDetailScreen = () => {
 
   const { id } = useLocalSearchParams()
   const product = products.find(p => p.id.toString() === id)
-  const router = useRouter()
+  
 
   //consume a context 
   //const { addItem} = useCart()
