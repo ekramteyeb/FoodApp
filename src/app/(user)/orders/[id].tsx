@@ -27,13 +27,13 @@ const OrderDetailScreen = () => {
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Order #' + order.id.toString() }} />
        
-      <OrderListItem order={order} />
+      
       
       <FlatList
         data={order.order_items}
         renderItem={(item) => <OrderItemListItem item={item.item} />}
         contentContainerStyle={{ gap: 10 }}
-        /* ListHeaderComponent={() =>  <OrderListItem order={order} /> } */
+        ListHeaderComponent={() => <OrderListItem order={order} />} 
         //if u wanna move the header with flatlist toger while scrolling 
       />
       
