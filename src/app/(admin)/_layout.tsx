@@ -38,7 +38,7 @@ export default function TabLayout() {
           title: 'Menu',
           headerShown:false, //to hide the stack header
           tabBarIcon: ({ color }) => <TabBarIcon name="cutlery" color={color} />,
-          headerRight: () => (
+          /* headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
@@ -51,16 +51,18 @@ export default function TabLayout() {
                 )}
               </Pressable>
             </Link>
-          ),
+          ), */
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="orders"
         options={{
           title: 'Orders',
+          headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
+      
     </Tabs>
   );
 }

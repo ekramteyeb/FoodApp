@@ -11,7 +11,7 @@ export default function MenuStack() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{
-        title: 'Menu', 
+        title: 'Orders', 
         headerRight: () => (
           <><Link href="/(admin)/menu/create" asChild>
             <Pressable>
