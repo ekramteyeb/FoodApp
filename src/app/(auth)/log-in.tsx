@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native'
 import React, {useState} from 'react'
-import { Stack, useRouter } from 'expo-router'
+import { Link, Stack, useRouter } from 'expo-router'
 import Button from '@/src/components/Button'
 import Colors from '@/src/constants/Colors'
+import { FontAwesome } from '@expo/vector-icons'
 
 const LoginScreen = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -62,7 +63,24 @@ const LoginScreen = () => {
 
   return (
     <View style={ styles.container }>
-      <Stack.Screen options={{ title: isLogin ? 'Login' : 'Sign up'}} />
+      <Stack.Screen options={{
+        title: isLogin ? 'Login' : 'Sign up', 
+        headerRight: () => (
+            <Link href="/" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="home"
+                    size={25}
+                    color={Colors.light.tint}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+
+          ),
+      }} />
       
       <Text style={styles.label}>Email : </Text>
       <TextInput

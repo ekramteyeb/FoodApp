@@ -2,6 +2,7 @@ import { Order } from '@/assets/types';
 import products from './products';
 import dayjs from 'dayjs';
 
+
 const now = dayjs();
 
 const orders: Order[] = [
@@ -52,6 +53,39 @@ const orders: Order[] = [
     created_at: now.subtract(3, 'weeks').toISOString(),
     total: 11.4,
     status: 'Delivered',
+    user_id: '1',
+    order_items: [
+      {
+        id: 1,
+        order_id: 23445,
+        size: 'M',
+        quantity: 1,
+        product_id: products[3].id,
+        products: products[3],
+      },
+      {
+        id: 2,
+        order_id: 23445,
+        size: 'M',
+        quantity: 1,
+        product_id: products[7].id,
+        products: products[7],
+      },
+      {
+        id: 3,
+        order_id: 23445,
+        size: 'L',
+        quantity: 1,
+        product_id: products[8].id,
+        products: products[8],
+      },
+    ],
+  },
+  {
+    id: 22445,
+    created_at: now.subtract(9, 'minutes').toISOString(),
+    total: 25.4,
+    status: 'Cooking',
     user_id: '1',
     order_items: [
       {

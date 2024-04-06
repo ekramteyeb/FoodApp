@@ -1,29 +1,35 @@
-import { StyleSheet, ScrollView, FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
-import ProductListItem from '@/src/components/ProductListItem';
-
-import Colors from '@/src/constants/Colors';
-import products from '@/assets/data/products';
 import React from 'react';
- 
-export default function MenuScreen() {
-  
+import orders from '@/assets/data/orders';
+import OrderListItem from '@/src/components/OrderListItem';
+
+export default function OrderScreen() {
   return (
     <FlatList
-      data={products}
-      renderItem={({ item }) => <ProductListItem product={item} />}
-      numColumns={2}
+      data={orders}
+      renderItem={({ item }) => <OrderListItem order={item} />}
+      
       contentContainerStyle={{ gap: 10, padding:10 }} //horizontal gap
-      columnWrapperStyle={{ gap:10 }}
+      
     />
+   
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 20,
-    padding: 10,
-    backgroundColor:'white'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
 });

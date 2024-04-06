@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Image, Pressable } from 'react-native';
 import { Link, useSegments } from 'expo-router'
+
 import { Text, View } from '@/src/components/Themed';
 //from dayjs
 import dayjs from 'dayjs';
@@ -26,7 +27,7 @@ const OrderListItem = ({ order }: { order: OrderListItemType }) => {
   return (
     <Link href={`/${segments[0]}/orders/${order.id}`} asChild>
         <Pressable style={styles.container}>
-        <View >
+        <View  >
             <Text style={styles.title}>Order #{order.id} </Text>
             <Text style={styles.time}>{timeFromNow} </Text>
             
@@ -43,27 +44,27 @@ export default OrderListItem
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
-    padding: 10,
+    padding: 20,
     backgroundColor: 'white',
-    flex: 1,
+   
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   
   title: {
-    fontSize: 18,
-    fontWeight: '800',
+    fontSize: 19,
+    fontWeight: 'bold',
     marginVertical: 5
   },
   
   status: {
       
-      fontWeight: '600',
+      fontWeight: '500',
       fontSize: 18
 },
     time: {
     color: 'gray',
-    fontSize: 16 
+   
     }
 });
