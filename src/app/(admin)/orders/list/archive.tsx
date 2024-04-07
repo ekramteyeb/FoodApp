@@ -7,7 +7,7 @@ import OrderListItem from '@/src/components/OrderListItem';
 export default function OrderScreen() {
   return (
     <FlatList
-      data={orders}
+      data={orders.filter(order => order.status === 'Delivered')}
       renderItem={({ item }) => <OrderListItem order={item} />}
       
       contentContainerStyle={{ gap: 10, padding:10 }} //horizontal gap
