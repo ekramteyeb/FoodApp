@@ -1,15 +1,23 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Pressable, Alert } from 'react-native'
 import React, {useState} from 'react'
 import { Link, Stack, useRouter } from 'expo-router'
 import Button from '@/src/components/Button'
 import Colors from '@/src/constants/Colors'
 import { FontAwesome } from '@expo/vector-icons'
+import { supabase } from '@/src/lib/supabase'
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
 
 const LoginScreen = () => {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [errorAny, setErrorAny] = useState('')
+   const [userData, setUserData] = useState<any[]>([]);
   
   const validatePassword = (input: string) => {
     const rules = input.split(';');
@@ -46,18 +54,43 @@ const LoginScreen = () => {
   const handlePasswordChange = (input:string) => {
     setPassword(input);
     const errorMessage = validatePassword(input);
-    setError(errorMessage);
+    setErrorAny(errorMessage);
   };
 
+  const signup = async () => {
+    try {
+    const { data , error }  = await supabase.auth.signUp({ email, password });
+    if (error) {
+      console.warn('Error signing up user:', error.message);
+    } else {
+      console.log('User signed up successfully:', data);
+      // Handle successful sign up
+    }
+  } catch (error : any) {
+    console.error('Error signing up user:', error.message);
+  }
+  }
+  const signin = async () => {
+    try {
+    const { data , error }  = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      console.warn('Error signing in user: ', error.message);
+    } else {
+      console.log('User signed in successfully: ', data.user);
+      // Handle successful sign up
+    }
+  } catch (error : any) {
+    console.error('Error signing in user: ', error.message);
+  }
+  }
+
   const onsubmit =  () => {
-    const valid = validatePassword(password)
-    if (valid) {
-      console.log(console.warn('pass me out' + password + email))
+    if (isLogin) {
+      signin()
+    } else {
+      console.warn('it is cliking ')
+      signup()
     }
-    else {
-      console.warn('pass me out' + error)
-    }
-      
   }
   
 
@@ -101,7 +134,7 @@ const LoginScreen = () => {
         
       />
 
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
+      {errorAny ? <Text style={{ color: 'red' }}>{errorAny}</Text> : null}
       
       <Button text={isLogin ? 'login' : 'Create account'} onPress={onsubmit} />
       <Text
