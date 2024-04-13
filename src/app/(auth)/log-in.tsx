@@ -17,7 +17,9 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorAny, setErrorAny] = useState('')
-   const [userData, setUserData] = useState<any[]>([]);
+  const [isloading, setIsloading] = useState(false)
+
+  const [userData, setUserData] = useState<any[]>([]);
   
   const validatePassword = (input: string) => {
     const rules = input.split(';');
@@ -58,29 +60,33 @@ const LoginScreen = () => {
   };
 
   const signup = async () => {
+    setIsLogin(true)
     try {
     const { data , error }  = await supabase.auth.signUp({ email, password });
     if (error) {
-      console.warn('Error signing up user:', error.message);
+      Alert.alert('Error signing up user:', error.message);
     } else {
+      Alert.alert('User signed up successfully:');
       console.log('User signed up successfully:', data);
+      setIsLogin(false)
       // Handle successful sign up
     }
   } catch (error : any) {
-    console.error('Error signing up user:', error.message);
+    Alert.alert('Error signing up user:', error.message);
   }
   }
   const signin = async () => {
     try {
     const { data , error }  = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      console.warn('Error signing in user: ', error.message);
+      Alert.alert('Error signing in user: ', error.message);
     } else {
+      Alert.alert('User signed in successfully: ');
       console.log('User signed in successfully: ', data.user);
       // Handle successful sign up
     }
   } catch (error : any) {
-    console.error('Error signing in user: ', error.message);
+    Alert.alert('Error signing in user: ', error.message);
   }
   }
 
@@ -88,7 +94,6 @@ const LoginScreen = () => {
     if (isLogin) {
       signin()
     } else {
-      console.warn('it is cliking ')
       signup()
     }
   }
@@ -136,7 +141,11 @@ const LoginScreen = () => {
 
       {errorAny ? <Text style={{ color: 'red' }}>{errorAny}</Text> : null}
       
-      <Button text={isLogin ? 'login' : 'Create account'} onPress={onsubmit} />
+      <Button
+        text={isLogin ? 'login' : 'Create account'}
+        onPress={onsubmit}
+        disabled={isloading}
+      />
       <Text
         style={styles.signup}
         onPress={() => setIsLogin(!isLogin)}

@@ -1,10 +1,31 @@
 import { StyleSheet, Text, View } from 'react-native'
 import Button from '../components/Button'
 import React from 'react'
-import { Link } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
+import { useAuth } from '../providers/AuthProvider'
+import { ActivityIndicator } from 'react-native'
+import { supabase } from '../lib/supabase'
 
 const index = () => {
-  return (
+  const { session, loading, isAdmin } = useAuth()
+  
+  if (loading) {
+    return (<Text>Loading ......</Text>)
+  }
+  
+  if(!session) {
+    return <Redirect href={'/(auth)/log-in'} />
+  }
+
+  if(!isAdmin) {
+    return <Redirect href={'/(user)/'} />
+  }
+
+  const signout = () => {
+    supabase.auth.signOut()
+  }
+  
+  return ( 
     <View style={styles.container}>
       <Link href={'/(admin)'} asChild>
         <Button text="Admin"/>
@@ -12,10 +33,8 @@ const index = () => {
       <Link href={'/(user)'} asChild>
         <Button text="User"/>
       </Link>
-      
-      <Link href={'/(auth)/log-in'} asChild>
-        <Button text="Auth"/>
-      </Link>
+    
+      <Button text="Sign out" onPress={signout} />
     </View>
   )
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
+import { Link, Redirect, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 
 import Colors from '@/src/constants/Colors';
 import { useColorScheme } from '@/src/components/useColorScheme';
 import { useClientOnlyValue } from '@/src/components/useClientOnlyValue';
+import { useAuth } from '@/src/providers/AuthProvider';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -17,6 +18,12 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { isAdmin } = useAuth()
+  
+  //if the user is not admin he is not allowed here
+  if(!isAdmin) {
+    return (<Redirect href={'/'} />)
+  }
 
   return (
     <Tabs
@@ -38,20 +45,7 @@ export default function TabLayout() {
           title: 'Menu',
           headerShown:false, //to hide the stack header
           tabBarIcon: ({ color }) => <TabBarIcon name="cutlery" color={color} />,
-          /* headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ), */
+          
         }}
       />
       <Tabs.Screen

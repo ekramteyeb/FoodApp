@@ -10,6 +10,7 @@ import Colors from '../constants/Colors';
 import { useColorScheme } from '@/src/components/useColorScheme';
 import { Pressable } from 'react-native';
 import { TabBarIcon } from './(user)/_layout';
+import AuthProvider from '../providers/AuthProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,6 +56,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <AuthProvider>
       <CartProvider>
         <Stack screenOptions={{
           headerRight: () => (
@@ -72,17 +74,15 @@ function RootLayoutNav() {
             </Link>
 
           ),
-        }}>
-          <Stack.Screen name="(admin)" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          
-          <Stack.Screen name="(user)" options={{ headerShown: false }} />
-          <Stack.Screen name="cart" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-          
-            
+          }}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(admin)" options={{ headerShown: false }} />
+            <Stack.Screen name="(user)" options={{ headerShown: false }} />
+            <Stack.Screen name="cart" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
       
-        </Stack>
-      </CartProvider>
+          </Stack>
+        </CartProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
