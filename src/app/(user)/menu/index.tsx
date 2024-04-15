@@ -1,13 +1,36 @@
-import { StyleSheet, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
 import ProductListItem from '@/src/components/ProductListItem';
 
-import Colors from '@/src/constants/Colors';
-import products from '@/assets/data/products';
 import React from 'react';
+
+import { useProductsList } from '@/src/api/products';
  
 export default function MenuScreen() {
+
+ /*  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data, error } = await supabase.from('products').select('*')
+      if (error) {
+         console.log(error, 'product fetch eror ')
+      }
+      console.log(data, 'product data')
+    }
+    fetchProduct()
+  }, [])
+   */
   
+    //using react  query 
+    const { data : products , error,  isLoading } = useProductsList()
+
+    if (isLoading) {
+      return <ActivityIndicator />
+    }
+    if (error) {
+      <Text>Failed to fetch products</Text>
+    }
+
+
   return (
     <FlatList
       data={products}

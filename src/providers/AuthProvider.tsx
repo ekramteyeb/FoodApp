@@ -24,7 +24,7 @@ export default function AuthProvider({children } : PropsWithChildren){
 
     useEffect(() => {
     
-        const fetchSession = async () => {
+      const fetchSession = async () => {
       try {
         const { data : { session }, error } = await supabase.auth.getSession();
 
@@ -35,37 +35,38 @@ export default function AuthProvider({children } : PropsWithChildren){
           // Check if data is available and update session state
           setSession(session);
           //fetch the user profile 
-          if (session) {
+          
             const { data } = await supabase
               .from('profiles')
               .select('*')
               .eq('id', session.user.id)
               .single()
+          
             setProfile(data || null)
             
-          }
-          setLoading(false)
         }
       } catch (error) {
         // Handle other errors (e.g., network issues)
         Alert.alert('Error fetching session');
+        
       }
+      setLoading(false)
     };
 
-        fetchSession(); // Call fetchSession inside useEffect
+    fetchSession(); // Call fetchSession inside useEffect
         //this will keep record of the session when ever there is a change in session automatically
-        supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session)
-        })
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
 
     // Use an empty dependency array to run this effect only once on mount
   }, []); 
 
 
     return (
-        <AuthContext.Provider value={{session, loading, profile, isAdmin : profile?.group === 'ADMIN' }}>
+      <AuthContext.Provider value={{session, loading, profile, isAdmin : profile?.group === 'ADMIN' }}>
             {children}
-        </AuthContext.Provider>)
+      </AuthContext.Provider>)
 
 }
 

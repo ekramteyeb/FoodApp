@@ -1,24 +1,50 @@
 import { StyleSheet, Text, View , TextInput, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import Button from '@/src/components/Button'
 import { defaultImage } from '@/src/components/ProductListItem'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
+import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from '@/src/api/products'
 
 
 export default function createProduct() {
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   const router = useRouter()
   
-  const { id } = useLocalSearchParams()
+  // const { id } = useLocalSearchParams() 
+  const { id: idString } = useLocalSearchParams()
+
+  const  id  = parseFloat(typeof idString === 'string' ? idString : idString?.[0])
+  
+
   const isUpdating = !!id;
   
+  //using useInsertProduct hook
+  const { mutate: insertProduct, isLoading } = useInsertProduct()
+  const { mutate: updateProduct } = useUpdateProduct()
+  const {mutate: deleteProduct} = useDeleteProduct()
+
+  let updatingProduct = null
+  //fetch the product  first
+  if (isUpdating) {
+    const { data } = useProduct(id)
+     updatingProduct = data
+  }
   
+  
+  useEffect(() => {
+    if (updatingProduct) {
+      setName(updatingProduct.name)
+      setPrice(updatingProduct.price.toString())
+      setImage(updatingProduct.image)
+    }
+  }, [updatingProduct])
+
   const validateInput = () => {
     setError('')
     if (!name) {
@@ -56,21 +82,52 @@ export default function createProduct() {
     if (!validateInput()) {
       return 
     }
-    console.warn('Creating product' + price + ' ' + name)
-    resetFields()
+    
+    insertProduct(
+      { name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields()
+          router.back()
+        },
+        onError: (error) => {
+
+        }
+      })
+    
+    
   }
 
    const onUpdate = () => {
     if (!validateInput()) {
       return 
     }
-    console.warn('Updating product' + price + ' ' + name)
-    resetFields()
+     
+     updateProduct(
+      { id, name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields()
+          router.back()
+        },
+        onError: (error) => {
+          console.log('error',  error)
+        }
+      })
    }
   
   const onDelete = () => {
-    console.warn('DELETEEEEE !!!!!')
-    router.push('/(admin)/menu/')
+    
+    deleteProduct(id,
+      {
+        onSuccess: () => {
+          router.replace('/(admin)/')
+        },
+        onError: (error) => {
+          console.log('error',  error)
+        }
+      })
+    /* router.push('/(admin)/menu/') */
   }
   const confirmDelete = () => {
     Alert.alert('Confirm', 'Are you sure you wanna delete this product', [
@@ -121,7 +178,7 @@ export default function createProduct() {
       />
       
       <Text style={{ color:'red', fontSize: 16 }}>{ error}</Text>
-      <Button text={isUpdating ? "Update " : "Create"} onPress={onSubmit} />
+      <Button text={isUpdating ? "Update " : "Create"} disabled={isLoading} onPress={onSubmit} />
       {isUpdating && <Text style={styles.deleteBtn} onPress={confirmDelete}>Delete</Text>}
     </View>
   )

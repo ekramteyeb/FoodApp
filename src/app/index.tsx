@@ -10,7 +10,7 @@ const index = () => {
   const { session, loading, isAdmin } = useAuth()
   
   if (loading) {
-    return (<Text>Loading ......</Text>)
+    return <ActivityIndicator />
   }
   
   if(!session) {
