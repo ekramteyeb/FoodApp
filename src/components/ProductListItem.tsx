@@ -3,12 +3,12 @@ import { Link, useSegments } from 'expo-router'
 import EditScreenInfo from '@/src/components/EditScreenInfo';
 import { Text, View } from '@/src/components/Themed';
 import Colors from '@/src/constants/Colors';
-import products from '@/assets/data/products';
-
+import { Tables } from '../supabase-types';
 
 import React from 'react';
 import tw from 'twrnc'
 
+//this type is replaced with Tables<'products'> type from supabase
 type ProductListItemType = {
   id: number,
   name: string,
@@ -18,7 +18,7 @@ type ProductListItemType = {
 export const defaultImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/peperoni.png'
 export const defaultImage1 = 'https://picsum.photos/1920/1080?random=1'
 
-const ProductListItem = ({ product }: { product: ProductListItemType }) => {
+const ProductListItem = ({ product }: { product: Tables<'products'> }) => {
   
   const segments = useSegments()
  
