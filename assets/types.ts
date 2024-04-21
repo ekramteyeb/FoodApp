@@ -5,7 +5,7 @@ export type Product = {
   price: number;
 };
 
-import { Database } from '@/src/supabase-types';
+import { Database } from '@/src/supabase-type1s';
 
 export type Tables<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Row'];

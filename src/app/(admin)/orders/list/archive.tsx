@@ -1,13 +1,24 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
 import React from 'react';
 import orders from '@/assets/data/orders';
 import OrderListItem from '@/src/components/OrderListItem';
+import { useOrdersAdminList } from '@/src/api/orders';
 
 export default function OrderScreen() {
+  const { data: orders, isLoading, error } = useOrdersAdminList({archived: true})
+  
+    if (isLoading) {
+      return <ActivityIndicator />
+    }
+    if (error) {
+      <Text>Failed to fetch products</Text>
+    }
+  
+
   return (
     <FlatList
-      data={orders.filter(order => order.status === 'Delivered')}
+      data={orders}
       renderItem={({ item }) => <OrderListItem order={item} />}
       
       contentContainerStyle={{ gap: 10, padding:10 }} //horizontal gap

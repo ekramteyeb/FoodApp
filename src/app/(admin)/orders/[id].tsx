@@ -1,27 +1,29 @@
-import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Pressable, FlatList, ActivityIndicator } from 'react-native'
+import React from 'react'
 
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
-import orders from '@/assets/data/orders'
-
-import Button from '@/src/components/Button'
+import { Stack, useLocalSearchParams, } from 'expo-router'
 import OrderListItem from '@/src/components/OrderListItem'
-import CartListItem from '@/src/components/CartListItem'
-import { useCart } from '@/src/providers/CartProvider'
 import OrderItemListItem from '@/src/components/OrderItemListItem'
 import { OrderStatusList } from '@/assets/types'
 import Colors from '@/src/constants/Colors'
+import { useOrdersAdminList } from '@/src/api/orders'
 
 const OrderDetailScreen = () => {
 
   
   const { id } = useLocalSearchParams()
-  const { items} = useCart()
-  const order = orders.find(o => o.id.toString() === id)
-  const router = useRouter()
-
+  
+  const { data: orders, isLoading, error } = useOrdersAdminList()
+  
+    if (isLoading) {
+      return <ActivityIndicator />
+    }
+    if (error) {
+      <Text>Failed to fetch products</Text>
+    }
   
   
+  const order = orders?.find(o => o.id.toString() === id)
 
   if (!order) { return <Text>order not found</Text> }
   
@@ -32,7 +34,7 @@ const OrderDetailScreen = () => {
       <OrderListItem order={order} />
       
       <FlatList
-        data={order.order_items}
+        data={order?.order_items}
         renderItem={(item) => <OrderItemListItem item={item.item} />}
         contentContainerStyle={{ gap: 10 }}
         /* ListHeaderComponent={() =>  <OrderListItem order={order} /> } */

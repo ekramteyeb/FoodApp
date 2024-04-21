@@ -3,7 +3,7 @@ import { Link, useSegments } from 'expo-router'
 import EditScreenInfo from '@/src/components/EditScreenInfo';
 import { Text, View } from '@/src/components/Themed';
 import Colors from '@/src/constants/Colors';
-import { Tables } from '../supabase-types';
+import { Tables } from '../supabase-type1s';
 
 import React from 'react';
 import tw from 'twrnc'

@@ -6,17 +6,16 @@ import { Text, View } from '@/src/components/Themed';
 //from dayjs
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { Tables } from '../supabase-types';
 
 
 
 type OrderListItemType = {
-  id: number,
-  created_at:  string, 
-  status : string
+  order: Tables<'orders'>
 }
 
 
-const OrderListItem = ({ order }: { order: OrderListItemType }) => {
+const OrderListItem = ({ order }:  OrderListItemType ) => {
   
     const segments = useSegments()
     
