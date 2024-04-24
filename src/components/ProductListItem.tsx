@@ -21,9 +21,11 @@ export const defaultImage1 = 'https://picsum.photos/1920/1080?random=1'
 const ProductListItem = ({ product }: { product: Tables<'products'> }) => {
   
   const segments = useSegments()
+  const path : any =  `/${segments[0]}/menu/${product.id}`
  
+
   return (
-    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
+    <Link href={path} asChild>
       <Pressable style={styles.container}>
         <Image source={{ uri: product.image ||  defaultImage }} style={[tw`bg-red-300`, styles.image]} />
         <Text style={styles.title}>{product.name} </Text>

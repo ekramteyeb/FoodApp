@@ -14,11 +14,10 @@ import { useRouter } from 'expo-router'
 const CartScreen = () => {
   
   const { items, total } = useContext(CartContext)
+  const {checkout} = useCart()
   const router = useRouter()
 
-  const checkouthandler = () => {
-
-  }
+  
   const gobackhandler = () => {
      router.push('/(user)/menu')
   }
@@ -34,7 +33,7 @@ const CartScreen = () => {
       <Text style={styles.total}>{items.length > 0 ? `Total : $ ${total.toFixed(2)}` : '0 items selected'} </Text>
       
       { items.length > 0 ?
-        <Button text='Checkout' onPress={checkouthandler} /> :
+        <Button text='Checkout' onPress={checkout} /> :
         <Button text='Go back to Shopping' onPress={gobackhandler} />
       }
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

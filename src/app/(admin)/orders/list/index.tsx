@@ -1,20 +1,27 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import OrderListItem from '@/src/components/OrderListItem';
 import { useOrdersAdminList } from '@/src/api/orders';
+import { supabase } from '@/src/lib/supabase';
+import { useQueryClient } from 'react-query';
+import { useInsertOrderSubscription } from '@/src/api/orders/subscriptions';
 
 
 export default function OrderScreen() {
    
   const { data: orders, isLoading, error } = useOrdersAdminList({archived:false})
   
-    if (isLoading) {
-      return <ActivityIndicator />
-    }
-    if (error) {
-      <Text>Failed to fetch products</Text>
-    }
+  //subscription
+  useInsertOrderSubscription()
+
+  if (isLoading) {
+    return <ActivityIndicator />
+  }
+  if (error) {
+    <Text>Failed to fetch orders</Text>
+  }
+  
   
   return (
     <FlatList

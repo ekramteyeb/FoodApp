@@ -6,26 +6,29 @@ import OrderListItem from '@/src/components/OrderListItem'
 import OrderItemListItem from '@/src/components/OrderItemListItem'
 import { OrderStatusList } from '@/assets/types'
 import Colors from '@/src/constants/Colors'
-import { useOrdersAdminList } from '@/src/api/orders'
+import { useOrderDetails, useUpdateOrder } from '@/src/api/orders'
 
 const OrderDetailScreen = () => {
 
+  const { id: idString } = useLocalSearchParams()
+  const  id  = parseFloat(typeof idString === 'string' ? idString : idString[0])
   
-  const { id } = useLocalSearchParams()
-  
-  const { data: orders, isLoading, error } = useOrdersAdminList()
-  
-    if (isLoading) {
-      return <ActivityIndicator />
-    }
-    if (error) {
-      <Text>Failed to fetch products</Text>
-    }
-  
-  
-  const order = orders?.find(o => o.id.toString() === id)
+  const { data: order, isLoading, error } = useOrderDetails(id)
 
-  if (!order) { return <Text>order not found</Text> }
+  const { mutate: updateOrder } = useUpdateOrder()
+  
+  const updateStatus = (status : string) => {
+      updateOrder({id: id, updatedFields: { status }}  )
+  }
+  
+  if (isLoading) {
+    return <ActivityIndicator />
+  }
+  if (error || !order) {
+    return  <Text>Failed to fetch orders</Text>
+  }
+
+  
   
   return (
     <View style={styles.container}>
@@ -34,7 +37,7 @@ const OrderDetailScreen = () => {
       <OrderListItem order={order} />
       
       <FlatList
-        data={order?.order_items}
+        data={order.order_items}
         renderItem={(item) => <OrderItemListItem item={item.item} />}
         contentContainerStyle={{ gap: 10 }}
         /* ListHeaderComponent={() =>  <OrderListItem order={order} /> } */
@@ -46,7 +49,7 @@ const OrderDetailScreen = () => {
               OrderStatusList.map((status) => (
                 <Pressable
                   key={status}
-                  onPress={() => console.warn('update Status')}
+                  onPress={ () => updateStatus(status)}
                   style={{ 
                     borderColor: Colors.light.tint,
                     borderWidth: 1, 
@@ -71,9 +74,7 @@ const OrderDetailScreen = () => {
           </View>
         </>}
       />
-      
-        
-      </View>
+    </View>
 
     
   )

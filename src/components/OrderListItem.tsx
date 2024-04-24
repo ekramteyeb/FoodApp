@@ -15,6 +15,7 @@ type OrderListItemType = {
 }
 
 
+
 const OrderListItem = ({ order }:  OrderListItemType ) => {
   
     const segments = useSegments()
@@ -22,9 +23,10 @@ const OrderListItem = ({ order }:  OrderListItemType ) => {
     dayjs.extend(relativeTime)
     const timeFromNow = dayjs(order.created_at).fromNow()
     
+    const path : any =  `/${segments[0]}/orders/${order.id}`
  
   return (
-    <Link href={`/${segments[0]}/orders/${order.id}`} asChild>
+    <Link href={path} asChild>
         <Pressable style={styles.container}>
         <View  >
             <Text style={styles.title}>Order #{order.id} </Text>

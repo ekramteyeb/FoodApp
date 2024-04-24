@@ -1,34 +1,38 @@
-import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, Pressable, FlatList, ActivityIndicator } from 'react-native'
+import React from 'react'
 
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
-import orders from '@/assets/data/orders'
 
-import Button from '@/src/components/Button'
+
 import OrderListItem from '@/src/components/OrderListItem'
 import CartListItem from '@/src/components/CartListItem'
 import { useCart } from '@/src/providers/CartProvider'
 import OrderItemListItem from '@/src/components/OrderItemListItem'
+import { useOrderDetails } from '@/src/api/orders'
+import { useUpdateOrderSubscription } from '@/src/api/orders/subscriptions'
 
 const OrderDetailScreen = () => {
 
+  const { id: idString } = useLocalSearchParams()
+  const  id  = parseFloat(typeof idString === 'string' ? idString : idString[0])
   
-  const { id } = useLocalSearchParams()
-  const { items} = useCart()
-  const order = orders.find(o => o.id.toString() === id)
-  const router = useRouter()
+  const { data: order, isLoading, error } = useOrderDetails(id)
+  
+  //subscription that listen to order status update
+  useUpdateOrderSubscription(id)
+  
+  if (isLoading) {
+    return <ActivityIndicator />
+  }
+  if (error || !order ) {
+    return <Text>Failed to fetch products</Text>
+  }
 
-  
-  
 
-  if (!order) { return <Text>order not found</Text> }
-  
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Order #' + order.id.toString() }} />
        
-      
-      
       <FlatList
         data={order.order_items}
         renderItem={(item) => <OrderItemListItem item={item.item} />}

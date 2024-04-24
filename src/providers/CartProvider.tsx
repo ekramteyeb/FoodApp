@@ -2,12 +2,19 @@ import React, { createContext, PropsWithChildren, useContext, useState } from "r
 import { CartItem } from "@/assets/types";
 import { Product } from "@/assets/types";
 import {randomUUID } from 'expo-crypto'
+import { useInsertOrder } from "../api/orders";
+import { useRouter } from 'expo-router'
+import { Tables } from "../supabase-types";
+import { useInsertOrderItems } from "../api/order-items";
+
+
 
 export type CartType = {
   items: CartItem[],
   addItem: (product: Product, size: CartItem['size']) => void, 
   total: number,
-  updateQuantity: (itemId: string, amount: 1 | -1) => void
+  updateQuantity: (itemId: string, amount: 1 | -1) => void,
+  checkout : () => void
   
 }
 //used to access the data in the contex 
@@ -15,13 +22,22 @@ export const CartContext = createContext<CartType>({
   items: [],
   addItem: () => {}, 
   total: 0,
-  updateQuantity : () => {}
+  updateQuantity: () => { },
+  checkout: () => {}
 })
 
 //wrapper which transport data to children 
 const CartProvider = ({ children } : PropsWithChildren ) => {
   const [items, setItems] = useState<CartItem[]>([])
+
+  const { mutate: insertOrder } = useInsertOrder()
+  const { mutate: insertOrderItem } = useInsertOrderItems()
+
+  const router = useRouter()
   
+  
+  const total = items.reduce((sum, item) => (sum += item.product.price * item.quantity), 0)
+
 
   const addItem = (product: Product, size: CartItem['size']) => {
     const existingItem = items.find(item => item.product.id === product.id && item.size === size)
@@ -54,12 +70,47 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
       )
     */
   }
+  // clear cart
+  const clearCart = () => {
+    setItems([])
+  }
+  //checkout
+  const checkout = () => {
+    
+    insertOrder(
+      { total },
+      {
+        onSuccess: saveOrderItems
+      }
+    )
+  }
 
-  const total = items.reduce((sum, item) => (sum += item.product.price * item.quantity), 0)
+  //insert orderItems to order 
+  const saveOrderItems = (order: Tables<'orders'>) => {
+
+    const orderItems = items.map((cartItem) => ({
+        order_id: order.id,
+        product_id: cartItem.product_id,
+        quantity: cartItem.quantity,
+        size: cartItem.size
+    }))
+
+    insertOrderItem(
+      orderItems,
+      {
+        onSuccess: () => {
+          
+          clearCart()
+          router.push(`/(user)/orders/${order.id}`)
+      }
+    })
+    
+  }
+
   
   
   return (
-    <CartContext.Provider value={{ items ,addItem, total, updateQuantity }}>
+    <CartContext.Provider value={{ items ,addItem, total, updateQuantity, checkout }}>
       {children}
     </CartContext.Provider>
   )
