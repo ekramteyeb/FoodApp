@@ -5,6 +5,7 @@ import Button from '@/src/components/Button'
 import { defaultImage } from '@/src/components/ProductListItem'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
+import * as ImageManipulator from 'expo-image-manipulator'
 import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from '@/src/api/products'
 import * as  FileSystem from 'expo-file-system'
 import { randomUUID } from 'expo-crypto'
@@ -87,8 +88,10 @@ export default function createProduct() {
 
 
     if (!result.canceled) {
-      console.log(result?.assets , 'result');
-      setImage(result?.assets[0]?.uri);
+      console.log(result?.assets, 'result');
+      const resizedUri = await resizeImage(result?.assets[0]?.uri);
+      setImage(resizedUri);
+      //setImage(result?.assets[0]?.uri);
     } 
 
   }
@@ -197,6 +200,16 @@ export default function createProduct() {
       console.log(error, 'uploading image')
     }
     
+  };
+
+  const resizeImage = async (uri : string) => {
+    try {
+      const resizedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 800 } }], { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG });
+      return resizedImage.uri;
+    } catch (error) {
+      console.error('Error resizing image:', error);
+      throw new Error('Failed to resize image');
+    }
   };
 
   return (
