@@ -61,6 +61,7 @@ const ProductDetailScreen = () => {
         style={ styles.image}
       /> 
       <Text style={styles.title}>{product.name} </Text>
+      
       <Text style={styles.price}>Price : ${product.price}</Text>
         
       </View>
@@ -80,7 +81,9 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: 400
+    borderRadius: 400,
+    alignSelf: 'center'
+    
   },
  
   price: {
