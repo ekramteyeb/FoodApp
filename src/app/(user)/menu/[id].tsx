@@ -7,6 +7,7 @@ import Button from '@/src/components/Button'
 import { useCart } from '@/src/providers/CartProvider'
 import { PizzaSize } from '@/assets/types'
 import { useProduct } from '@/src/api/products'
+import RemoteImage from '@/src/components/RemoteImage'
 
 const ProductDetailScreen = () => {
 
@@ -27,7 +28,7 @@ const ProductDetailScreen = () => {
   const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
   const addtocart = () => {
-    if (!product) return
+    if (!product) return null
     
     addItem(product, productSize)
     router.push('/cart')
@@ -43,9 +44,13 @@ const ProductDetailScreen = () => {
   
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: product.name}} />
+      <Stack.Screen options={{ title: product?.name}} />
       
-      <Image style={styles.image} source={{ uri: product.image || defaultImage }} /> 
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultImage}
+        style={styles.image}
+      />
       
      
         <Text style={styles.selectSize}>Select Size </Text>
@@ -66,7 +71,7 @@ const ProductDetailScreen = () => {
               </Pressable>)}
         </View>
       
-        <Text style={styles.price}>Price : ${product.price}</Text>
+        <Text style={styles.price}>Price : ${product?.price}</Text>
 
         <Button onPress={addtocart} text='Add to cart' />
         
@@ -86,7 +91,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    aspectRatio: 1
+    aspectRatio: 1,
+    borderRadius: 400
   },
   productSizes: {
     flexDirection:'row',

@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Image, Pressable, FlatList, ActivityIndicator } from 'react-native'
 import React from 'react'
-
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 
 
@@ -10,6 +9,7 @@ import { useCart } from '@/src/providers/CartProvider'
 import OrderItemListItem from '@/src/components/OrderItemListItem'
 import { useOrderDetails } from '@/src/api/orders'
 import { useUpdateOrderSubscription } from '@/src/api/orders/subscriptions'
+
 
 const OrderDetailScreen = () => {
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Button from '../components/Button'
 import React from 'react'
 import { Link, Redirect } from 'expo-router'

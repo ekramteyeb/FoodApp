@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View ,Platform, FlatList, Image} from 'react-native'
+import { StyleSheet, Text, View ,Platform, FlatList} from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import Button from '../components/Button'
 import { CartContext, useCart} from '@/src/providers/CartProvider'
 import React, { useContext } from 'react'
 import { CartItem } from '@/assets/types'
-import { defaultImage } from '../components/ProductListItem'
 import CartListItem from '../components/CartListItem'
 import { useRouter } from 'expo-router'
 

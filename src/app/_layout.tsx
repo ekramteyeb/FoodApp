@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, Link, Tabs } from 'expo-router';
+import { Stack, Link } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import CartProvider from '@/src/providers/CartProvider'
@@ -9,7 +9,6 @@ import Colors from '../constants/Colors';
 
 import { useColorScheme } from '@/src/components/useColorScheme';
 import { Pressable } from 'react-native';
-import { TabBarIcon } from './(user)/_layout';
 import AuthProvider from '../providers/AuthProvider';
 import QueryProvider from '../providers/QueryProvider';
 

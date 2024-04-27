@@ -10,6 +10,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import Colors from '@/src/constants/Colors'
 import { Link } from 'expo-router'
 import { useProduct } from '@/src/api/products'
+import RemoteImage from '@/src/components/RemoteImage'
 
 const ProductDetailScreen = () => {
 
@@ -54,9 +55,13 @@ const ProductDetailScreen = () => {
         }}
       />
       
-        <Image style={styles.image} source={{ uri: product.image || defaultImage }} /> 
-        <Text style={styles.title}>{product.name} </Text>
-        <Text style={styles.price}>Price : ${product.price}</Text>
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultImage}
+        style={ styles.image}
+      /> 
+      <Text style={styles.title}>{product.name} </Text>
+      <Text style={styles.price}>Price : ${product.price}</Text>
         
       </View>
 
@@ -74,7 +79,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    aspectRatio: 1
+    aspectRatio: 1,
+    borderRadius: 400
   },
  
   price: {

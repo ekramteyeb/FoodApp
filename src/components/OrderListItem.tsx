@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { Link, useSegments } from 'expo-router'
 
 import { Text, View } from '@/src/components/Themed';
@@ -26,7 +26,7 @@ const OrderListItem = ({ order }:  OrderListItemType ) => {
     const path : any =  `/${segments[0]}/orders/${order.id}`
  
   return (
-    <Link href={path} asChild>
+    <Link href={path} asChild={true}>
         <Pressable style={styles.container}>
         <View  >
             <Text style={styles.title}>Order #{order.id} </Text>

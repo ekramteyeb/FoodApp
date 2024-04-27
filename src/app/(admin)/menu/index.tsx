@@ -2,7 +2,6 @@ import { StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { Text} from '@/src/components/Themed';
 import ProductListItem from '@/src/components/ProductListItem';
 
-
 import React from 'react';
 import { useProductsList } from '@/src/api/products';
  

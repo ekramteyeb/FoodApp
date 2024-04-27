@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import Colors from '../constants/Colors';
 
 import { defaultImage } from './ProductListItem';
 import { Tables } from '../supabase-types';
+import RemoteImage from './RemoteImage';
 
 type OrderItemListItemProps = {
   item: { products: Tables<'products'> }  & Tables<'order_items'> ;
@@ -13,8 +14,9 @@ const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
   
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: item.products.image || defaultImage }}
+      <RemoteImage
+        path={item.products.image}
+        fallback={defaultImage}
         style={styles.image}
         resizeMode="contain"
       />
@@ -46,6 +48,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     alignSelf: 'center',
     marginRight: 10,
+    borderRadius: 100
   },
   title: {
     fontWeight: '500',

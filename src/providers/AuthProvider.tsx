@@ -2,18 +2,19 @@ import React, { useState,createContext, PropsWithChildren, useEffect, useContext
 import { supabase } from "../lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { Alert } from "react-native";
+import { Tables } from "../supabase-types";
 
 type AuthData = {
     session: Session | null,
     loading: boolean,
-    profile: any, 
+    profile: Tables<'profiles'> | null, 
     isAdmin: boolean
 }
 //initialize the data here 
 const AuthContext = createContext<AuthData>({
     session: null, 
     loading: true,
-    profile: null, 
+    profile: null ,
     isAdmin: false
 })
 

@@ -2,8 +2,8 @@ import "react-native-url-polyfill/auto";
 
 import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as SecureStore from 'expo-secure-store';
-import * as aesjs from 'aes-js';
+/* import * as SecureStore from 'expo-secure-store';
+import * as aesjs from 'aes-js'; */
 
 import { SUPABASE_KEY } from '@env'
 import { Database } from "@/src/supabase-types";
@@ -11,7 +11,7 @@ import { Database } from "@/src/supabase-types";
 // As Expo's SecureStore does not support values larger than 2048
 // bytes, an AES-256 key is generated and stored in SecureStore, while
 // it is used to encrypt/decrypt values stored in AsyncStorage.
-class LargeSecureStore {
+/* class LargeSecureStore {
   
   private async _encrypt(key: string, value: string) {
     const encryptionKey = crypto.getRandomValues(new Uint8Array(256 / 8));
@@ -54,7 +54,7 @@ class LargeSecureStore {
     await AsyncStorage.setItem(key, encrypted);
   }
 }
-
+ */
 const supabaseUrl = 'https://fotxoulzacsjvaiwwida.supabase.co'
 const supabaseAnonKey   = SUPABASE_KEY
 
