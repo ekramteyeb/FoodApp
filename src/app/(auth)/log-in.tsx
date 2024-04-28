@@ -19,7 +19,7 @@ const LoginScreen = () => {
   const [errorAny, setErrorAny] = useState('')
   const [isloading, setIsloading] = useState(false)
 
-  const [userData, setUserData] = useState<any[]>([]);
+  //const [userData, setUserData] = useState<any[]>([]);
   
   const validatePassword = (input: string) => {
     const rules = input.split(';');
