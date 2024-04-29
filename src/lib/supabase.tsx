@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 /* import * as SecureStore from 'expo-secure-store';
 import * as aesjs from 'aes-js'; */
 
-import { SUPABASE_KEY, SUPABASE_URL, SUPABASE_KEY_LOCAL,SUPABASE_URL_LOCAL  } from '@env'
+import { EXPO_PUBLIC_SUPABASE_KEY, EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_KEY_LOCAL,EXPO_PUBLIC_SUPABASE_URL_LOCAL  } from '@env'
 import { Database } from "@/src/supabase-types";
 
 // As Expo's SecureStore does not support values larger than 2048
@@ -57,8 +57,8 @@ import { Database } from "@/src/supabase-types";
  */
 const isLocal = false
 
-const supabaseUrl = isLocal ? SUPABASE_URL_LOCAL : SUPABASE_URL
-const supabaseAnonKey   = isLocal  ? SUPABASE_KEY_LOCAL : SUPABASE_KEY
+const supabaseUrl = isLocal ? EXPO_PUBLIC_SUPABASE_URL_LOCAL : EXPO_PUBLIC_SUPABASE_URL
+const supabaseAnonKey   = isLocal  ? EXPO_PUBLIC_SUPABASE_KEY_LOCAL : EXPO_PUBLIC_SUPABASE_KEY
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {

@@ -15,7 +15,8 @@ const CartScreen = () => {
   const { items, total } = useContext(CartContext)
   const {checkout} = useCart()
   const router = useRouter()
-
+  
+  
   
   const gobackhandler = () => {
      router.push('/(user)/menu')
