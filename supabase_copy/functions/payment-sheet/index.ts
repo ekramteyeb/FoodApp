@@ -3,35 +3,31 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
-// <reference types="https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts" />
+/// <reference types="https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts" />
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { stripe } from '../_utils/stripe.ts'
+import { stripe } from '../_utils/stripe.js'
 
-console.log("Hello from Functions!")
+//console.log("Hello from Functions!")
 
-serve(async (req: { json: () => PromiseLike<{ amount: any; }> | { amount: any; }; }) => {
+serve(async (req : any) => {
   
   
   try {
-    
   
-  
-  const { amount } = await req.json()
-  
-
-  //payment intent 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount,
-    currency: 'usd'
-  }) 
-  const res = {
-    paymentIntent: paymentIntent.client_secret,
-    publishableKey: Deno.env.get('EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY')
-  } 
-  return new Response(
-    JSON.stringify(res),
-    { headers: { "Content-Type": "application/json" } },
-  )
+      const { amount } = await req.json()    
+      //payment intent 
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: 'usd'
+      }) 
+      const res = {
+        paymentIntent: paymentIntent.client_secret,
+        publishableKey: Deno.env.get('EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+      } 
+      return new Response(
+        JSON.stringify(res),
+        { headers: { "Content-Type": "application/json" } },
+      )
     } catch (error) {
     return new Response(JSON.stringify(error), {
       headers : { 'Content-Type': 'application/json' },
