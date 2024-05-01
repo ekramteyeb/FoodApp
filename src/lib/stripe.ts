@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import { supabase } from "./supabase";
 
 // Payments
-const fetchPaymentSheetParams = async (amount: number) => {
+export const fetchPaymentSheetParams = async (amount: number) => {
   // Create payment session for our customer
   const { data, error } = await supabase.functions.invoke('payment-sheet', {
     body: { amount },
@@ -17,7 +17,8 @@ const fetchPaymentSheetParams = async (amount: number) => {
 
 export const initialisePaymentSheet = async (amount: number) => {
   // setLoading(true);
-  const { paymentIntent, publishableKey } = await fetchPaymentSheetParams(amount);
+  console.log('Initialize the payment sheet , for :  ',amount)
+  /* const { paymentIntent, publishableKey } = await fetchPaymentSheetParams(amount);
 
   if (!publishableKey || !paymentIntent) return;
 
@@ -28,7 +29,7 @@ export const initialisePaymentSheet = async (amount: number) => {
     defaultBillingDetails: {
       name: 'Jane Doe',
     },
-  });
+  }); */
 };
 
 const openPaymentSheet = async () => {

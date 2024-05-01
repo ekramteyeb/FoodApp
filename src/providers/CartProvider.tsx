@@ -78,10 +78,10 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
   //checkout
   const checkout = async () => {
     await initialisePaymentSheet(Math.floor(total * 100));
-    const payed = await openPaymentSheet();
+    /* const payed = await openPaymentSheet();
       if (!payed) {
         return;
-      }
+      } */
     insertOrder(
       { total },
       {
