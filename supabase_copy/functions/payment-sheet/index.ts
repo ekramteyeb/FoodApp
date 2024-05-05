@@ -11,7 +11,7 @@ import { stripe } from '../_utils/stripe.js'
 
 serve(async (req : any) => {
   
-  
+  console.log(Deno.env.get('EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY'), 'deno publishable key')
   try {
   
       const { amount } = await req.json()    

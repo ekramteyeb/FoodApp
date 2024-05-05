@@ -29,6 +29,7 @@ const encrypt = async (key: string, value: string) => {
     return aesjs.utils.hex.fromBytes(encryptedBytes);
 }
 
+
 const decrypt = async (key: string, value: string) => {
   
   const encryptionKeyHex = await SecureStore.getItemAsync(key);

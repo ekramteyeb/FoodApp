@@ -6,7 +6,7 @@ import { useInsertOrder } from "../api/orders";
 import { useRouter } from 'expo-router'
 import { Tables } from "../supabase-types";
 import { useInsertOrderItems } from "../api/order-items";
-import { initialisePaymentSheet } from "../lib/stripe";
+import { initialisePaymentSheet, openPaymentSheet } from "../lib/stripe";
 
 
 
@@ -78,11 +78,12 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
   //checkout
   const checkout = async () => {
     await initialisePaymentSheet(Math.floor(total * 100));
-    /* const payed = await openPaymentSheet();
+    
+    const payed = await openPaymentSheet();
       if (!payed) {
         return;
-      } */
-    insertOrder(
+      } 
+      insertOrder(
       { total },
       {
         onSuccess: saveOrderItems
