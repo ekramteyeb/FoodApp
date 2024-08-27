@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Pressable, ActivityIndicator } from 'react-native'
 import React, {useState} from 'react'
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 

@@ -1,25 +1,24 @@
 import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Redirect, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+//import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {  Redirect, Tabs } from 'expo-router';
 
 import Colors from '@/src/constants/Colors';
-import { useColorScheme } from '@/src/components/useColorScheme';
+//import { useColorScheme } from '@/src/components/useColorScheme';
 import { useClientOnlyValue } from '@/src/components/useClientOnlyValue';
 import { useAuth } from '@/src/providers/AuthProvider';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={20} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome5 size={20} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  //const colorScheme = useColorScheme();
   const { isAdmin } = useAuth()
-  
   //if the user is not admin he is not allowed here
   if(!isAdmin) {
     return (<Redirect href={'/'} />)
@@ -44,7 +43,7 @@ export default function TabLayout() {
         options={{
           title: 'Menu',
           headerShown:false, //to hide the stack header
-          tabBarIcon: ({ color }) => <TabBarIcon name="cutlery" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />,
           
         }}
       />

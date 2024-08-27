@@ -1,6 +1,7 @@
 import { Alert } from "react-native";
 import { supabase } from "./supabase";
-import { initPaymentSheet, presentPaymentSheet } from "@stripe/stripe-react-native";
+//import { initPaymentSheet, presentPaymentSheet } from "@stripe/stripe-react-native";
+import {  presentPaymentSheet, initPaymentSheet } from "@stripe/stripe-react-native";
 
 
 // Payments
@@ -22,15 +23,23 @@ const fetchPaymentSheetParams = async (amount: number) => {
 };
 
 export const initialisePaymentSheet = async (amount: number) => {
-  // setLoading(true);
+  //setLoading(true);
   //const { paymentIntent, publishableKey } = await fetchPaymentSheetParams(amount);
-  const {paymentIntent, publishableKey, customer, ephemeralKey }  = await fetchPaymentSheetParams(amount);
+  const { paymentIntent, publishableKey, customer, ephemeralKey } = await fetchPaymentSheetParams(amount);
   
-  console.log(paymentIntent, ' payment intent')
+  
+  /* console.log(paymentIntent, ' payment intent')
   console.log(publishableKey, ' publishable key')
+  console.log(ephemeralKey, 'ephmeral key')
+  console.log(customer, 'customer ') */
+
+  //WORKS UNTIL HERE 
 
   if (!publishableKey || !paymentIntent) return;
- 
+
+  console.log('so far we are good ')
+  
+  //until here works
   const { error } = await initPaymentSheet({
     merchantDisplayName: 'Example, Inc.',
     paymentIntentClientSecret: paymentIntent,
@@ -40,9 +49,12 @@ export const initialisePaymentSheet = async (amount: number) => {
       name: 'Jane Doe',
     },
   }); 
+
   if (error) {
     Alert.alert(`Error a: ${error?.message ?? 'payment sheet not initialized'}`);
-  }
+ 
+  } 
+  
 };
 
 export const openPaymentSheet = async () => {

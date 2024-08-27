@@ -1,5 +1,5 @@
-import { StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native';
-import { Text, View } from '@/src/components/Themed';
+import { StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { Text } from '@/src/components/Themed';
 import ProductListItem from '@/src/components/ProductListItem';
 
 import React from 'react';

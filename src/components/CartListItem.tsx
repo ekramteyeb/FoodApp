@@ -3,7 +3,7 @@ import React from 'react';
 import Colors from '../constants/Colors';
 import { CartItem } from '@/assets/types';
 import { defaultImage } from '../components/ProductListItem'
-import { FontAwesome } from '@expo/vector-icons';
+import Entypo from '@expo/vector-icons/Entypo'
 import { useCart } from '../providers/CartProvider';
 import RemoteImage from './RemoteImage';
 
@@ -29,7 +29,7 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
         </View>
       </View>
       <View style={styles.quantitySelector}>
-        <FontAwesome
+        <Entypo
           onPress={() => updateQuantity(cartItem.id, -1)}
           name="minus"
           color="gray"
@@ -37,12 +37,13 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
         />
 
         <Text style={styles.quantity}>{cartItem.quantity}</Text>
-        <FontAwesome
+        <Entypo
           onPress={() => updateQuantity(cartItem.id, 1)}
           name="plus"
           color="gray"
           style={{ padding: 10 ,fontSize:20, backgroundColor:'lightblue', borderRadius:100, aspectRatio:1 }}
         />
+      
       </View>
     </View>
   );

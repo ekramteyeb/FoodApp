@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, TextInput, Pressable, Alert } from 'react-native'
 import React, {useState} from 'react'
-import { Link, Stack, useRouter } from 'expo-router'
+import { Link, Stack} from 'expo-router'
 import Button from '@/src/components/Button'
 import Colors from '@/src/constants/Colors'
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
 import { supabase } from '@/src/lib/supabase'
 
-interface User {
+/* interface User {
   id: string;
   name: string;
   email: string;
-}
+} */
 
 const LoginScreen = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -61,6 +61,7 @@ const LoginScreen = () => {
 
   const signup = async () => {
     setIsLogin(true)
+    setIsloading(true)
     try {
     const { data , error }  = await supabase.auth.signUp({ email, password });
     if (error) {
@@ -69,9 +70,10 @@ const LoginScreen = () => {
       Alert.alert('User signed up successfully:');
       console.log('User signed up successfully:', data);
       setIsLogin(false)
+      setIsloading(false)
       // Handle successful sign up
     }
-  } catch (error : any) {
+  } catch (error : any ) {
     Alert.alert('Error signing up user:', error.message);
   }
   }
@@ -107,7 +109,7 @@ const LoginScreen = () => {
             <Link href="/" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
+                  <FontAwesome5
                     name="home"
                     size={25}
                     color={Colors.light.tint}

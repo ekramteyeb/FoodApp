@@ -1,7 +1,6 @@
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { Text, View } from '@/src/components/Themed';
+import { ActivityIndicator, FlatList } from 'react-native';
+import { Text } from '@/src/components/Themed';
 import React from 'react';
-import orders from '@/assets/data/orders';
 import OrderListItem from '@/src/components/OrderListItem';
 import { useMyOrderList } from '@/src/api/orders';
 
@@ -19,8 +18,7 @@ export default function OrderScreen() {
   return (
     <FlatList
       data={orders}
-      renderItem={({ item }) => <OrderListItem order={item} />}
-      
+      renderItem={({item}) => <OrderListItem order={item} />}
       contentContainerStyle={{ gap: 10, padding:10 }} //horizontal gap
       
     />
@@ -28,7 +26,7 @@ export default function OrderScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -44,3 +42,4 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+ */

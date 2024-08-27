@@ -2,7 +2,7 @@ import { Stack } from "expo-router"
 import React from "react"
 import { Link } from "expo-router"
 import { Pressable } from "react-native"
-import { FontAwesome } from "@expo/vector-icons"
+import {  FontAwesome5 } from "@expo/vector-icons"
 import Colors from "@/src/constants/Colors"
 
 
@@ -15,7 +15,7 @@ export default function MenuStack() {
           <><Link href="/cart" asChild>
             <Pressable>
               {({ pressed }) => (
-                <FontAwesome
+                <FontAwesome5
                   name="shopping-cart"
                   size={25}
                   color={Colors.light.tint}
@@ -26,7 +26,7 @@ export default function MenuStack() {
             <Link href="/" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
+                  <FontAwesome5
                     name="home"
                     size={25}
                     color={Colors.light.tint}

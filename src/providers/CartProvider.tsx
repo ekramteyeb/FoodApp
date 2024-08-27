@@ -3,7 +3,7 @@ import { CartItem } from "@/assets/types";
 import { Product } from "@/assets/types";
 import {randomUUID } from 'expo-crypto'
 import { useInsertOrder } from "../api/orders";
-import { useRouter } from 'expo-router'
+//import { useRouter } from 'expo-router'
 import { Tables } from "../supabase-types";
 import { useInsertOrderItems } from "../api/order-items";
 import { initialisePaymentSheet, openPaymentSheet } from "../lib/stripe";
@@ -34,7 +34,7 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
   const { mutate: insertOrder } = useInsertOrder()
   const { mutate: insertOrderItem } = useInsertOrderItems()
 
-  const router = useRouter()
+ // const router = useRouter()
   
   
   const total = items.reduce((sum, item) => (sum += item.product.price * item.quantity), 0)
@@ -88,7 +88,8 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
       {
         onSuccess: saveOrderItems
       }
-    )
+    ) 
+    
   }
 
   //insert orderItems to order 
@@ -107,7 +108,7 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
         onSuccess: () => {
           
           clearCart()
-          router.push(`/(user)/orders/${order.id}`)
+          //router.push(`/(user)/orders/${order.id}`)
       }
     })
     

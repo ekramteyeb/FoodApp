@@ -1,4 +1,3 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack, Link } from 'expo-router';
@@ -12,6 +11,8 @@ import { Pressable } from 'react-native';
 import AuthProvider from '../providers/AuthProvider';
 import QueryProvider from '../providers/QueryProvider';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
+import NotificationProvider from '../providers/NotificationProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,7 +32,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
+    ...FontAwesome5.font,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -54,6 +55,8 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  
+  
   return (
     <StripeProvider
       publishableKey={
@@ -63,14 +66,15 @@ function RootLayoutNav() {
 
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <QueryProvider>
+          <QueryProvider>
+            <NotificationProvider>
       <CartProvider>
         <Stack screenOptions={{
           headerRight: () => (
             <Link href="/" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
+                  <FontAwesome5
                     name="plane"
                     size={25}
                     color={Colors.light.tint}
@@ -82,13 +86,15 @@ function RootLayoutNav() {
 
           ),
           }}>
+            
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(admin)" options={{ headerShown: false }} />
             <Stack.Screen name="(user)" options={{ headerShown: false }} />
+            <Stack.Screen name="(admin)" options={{ headerShown: false }} />
             <Stack.Screen name="cart" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
       
           </Stack>
-          </CartProvider>
+              </CartProvider>
+              </NotificationProvider>
           </QueryProvider>
       </AuthProvider>
       </ThemeProvider>
