@@ -55,21 +55,21 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          status: string 
+          status: string
           total: number
           user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: number
-          status?: string | null
-          total?: number
+          status?: string
+          total: number
           user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: number
-          status?: string | null
+          status?: string
           total?: number
           user_id?: string | null
         }
@@ -110,27 +110,33 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          expo_push_token: string | null
           full_name: string | null
           group: string
           id: string
+          stripe_customer_id: string | null
           updated_at: string | null
           username: string | null
           website: string | null
         }
         Insert: {
           avatar_url?: string | null
+          expo_push_token?: string | null
           full_name?: string | null
           group?: string
           id: string
+          stripe_customer_id?: string | null
           updated_at?: string | null
           username?: string | null
           website?: string | null
         }
         Update: {
           avatar_url?: string | null
+          expo_push_token?: string | null
           full_name?: string | null
           group?: string
           id?: string
+          stripe_customer_id?: string | null
           updated_at?: string | null
           username?: string | null
           website?: string | null

@@ -68,32 +68,32 @@ function RootLayoutNav() {
       <AuthProvider>
           <QueryProvider>
             <NotificationProvider>
-      <CartProvider>
-        <Stack screenOptions={{
-          headerRight: () => (
-            <Link href="/" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome5
-                    name="plane"
-                    size={25}
-                    color={Colors.light.tint}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+              <CartProvider>
+                <Stack screenOptions={{
+                  headerRight: () => (
+                    <Link href="/" asChild>
+                      <Pressable>
+                        {({ pressed }) => (
+                          <FontAwesome5
+                            name="plane"
+                            size={25}
+                            color={Colors.light.tint}
+                            style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                          />
+                        )}
+                      </Pressable>
+                    </Link>
 
-          ),
-          }}>
-            
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(user)" options={{ headerShown: false }} />
-            <Stack.Screen name="(admin)" options={{ headerShown: false }} />
-            <Stack.Screen name="cart" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-      
-          </Stack>
-              </CartProvider>
+                  ),
+                  }}>
+                    
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    <Stack.Screen name="(user)" options={{ headerShown: false }} />
+                    <Stack.Screen name="(admin)" options={{ headerShown: false }} />
+                    <Stack.Screen name="cart" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+              
+                  </Stack>
+                </CartProvider>
               </NotificationProvider>
           </QueryProvider>
       </AuthProvider>
