@@ -7,6 +7,7 @@ import { useInsertOrder } from "../api/orders";
 import { Tables } from "../supabase-types";
 import { useInsertOrderItems } from "../api/order-items";
 import { initialisePaymentSheet, openPaymentSheet } from "../lib/stripe";
+import { sendPushNotification } from "../lib/notifications";
 
 
 
@@ -106,7 +107,9 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
       orderItems,
       {
         onSuccess: () => {
-          
+          const title = 'order recieved'
+          const body = 'body will be displayed later'
+          sendPushNotification('ExponentPushToken[UzsnBlOkMuqlKHfkys1xNp]', title, body)
           clearCart()
           //router.push(`/(user)/orders/${order.id}`)
       }

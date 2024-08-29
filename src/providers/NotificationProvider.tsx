@@ -18,7 +18,6 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
    
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
-  
     
   const savePushToken = async (newToken: string) => {
     
@@ -46,7 +45,10 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
         
       if (notificationListener.current) {
           responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          console.log(response);
+          
+            
+          
+            console.log(response, 'response ');
           });
         }
         

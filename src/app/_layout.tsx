@@ -69,6 +69,7 @@ function RootLayoutNav() {
           <QueryProvider>
             <NotificationProvider>
               <CartProvider>
+                
                 <Stack screenOptions={{
                   headerRight: () => (
                     <Link href="/" asChild>
@@ -91,7 +92,6 @@ function RootLayoutNav() {
                     <Stack.Screen name="(user)" options={{ headerShown: false }} />
                     <Stack.Screen name="(admin)" options={{ headerShown: false }} />
                     <Stack.Screen name="cart" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-              
                   </Stack>
                 </CartProvider>
               </NotificationProvider>
