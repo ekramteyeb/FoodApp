@@ -1,6 +1,6 @@
 
-import { Redirect } from 'expo-router';
-import { ActivityIndicator } from 'react-native';
+import { Link, Redirect } from 'expo-router';
+import { ActivityIndicator, Button, View, StyleSheet } from 'react-native';
 import { useAuth } from '../providers/AuthProvider';
 import React from 'react';
 
@@ -8,7 +8,7 @@ export default function Index() {
     
     const { session, loading, isAdmin } = useAuth()
 
-  
+    console.log(isAdmin, 'in index app layout')
     // Replace this with actual authentication logic
     
 
@@ -23,10 +23,30 @@ export default function Index() {
   if(!isAdmin) {
     return <Redirect href={'/(user)/'} />
   }
-  if(session && isAdmin) {
+   if(session && isAdmin) {
     return <Redirect href={'/(admin)/'} />
-  }
+  } 
  
-
-  return null; // Render nothing, just handle navigation
+  
+  return (
+    <View style={styles.container}>
+      <Link href={'/(admin)'} asChild>
+        <Button title="Admin"/>
+      </Link>
+      <Link href={'/(user)'} asChild>
+        <Button title="User"/>
+      </Link>
+    
+      
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, 
+    justifyContent: 'center', 
+    padding: 10
+  }, 
+  
+})

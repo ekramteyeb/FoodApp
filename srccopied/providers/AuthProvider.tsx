@@ -4,46 +4,24 @@ import { Session } from "@supabase/supabase-js";
 import { Alert } from "react-native";
 import { Tables } from "../supabase-types";
 
-type AuthData  = {
+type AuthData = {
     session: Session | null,
     loading: boolean,
     profile: Tables<'profiles'> | null, 
-    isAdmin: boolean,
-    updateIsItAdmin: (role : boolean) => void
-} 
+    isAdmin: boolean
+}
 //initialize the data here 
-const initialState = {
+const AuthContext = createContext<AuthData>({
     session: null, 
     loading: true,
     profile: null ,
-    isAdmin: false, 
-    updateIsItAdmin: () => {}
-}
-//Create context 
-const AuthContext = createContext<AuthData>(initialState)
+    isAdmin: false
+})
 
-/* const reducer = (initialState : AuthData, action: any) => {
-      switch (action.type) {
-        case 'UPDATE_PROFILE':
-          if (action.profile) {
-            return {
-              ...initialState,
-              profile: action.profile, // Conditionally toggle property1
-            };
-          }
-          return initialState;
-
-      default:
-        return initialState;
-    }
-}; */
-
-  
 export default function AuthProvider({children } : PropsWithChildren){
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true)
-  const [profile, setProfile] = useState<Tables<'profiles'> | null>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
+    const [profile, setProfile] = useState<Tables<'profiles'> | null>(null)
  
     useEffect(() => {
     
@@ -66,7 +44,6 @@ export default function AuthProvider({children } : PropsWithChildren){
               .single()
           
           setProfile(data || null)
-          setIsAdmin(data?.group === 'ADMIN')
           console.log('profile from authProvider', data)
             
         }
@@ -85,18 +62,11 @@ export default function AuthProvider({children } : PropsWithChildren){
     })
 
     // Use an empty dependency array to run this effect only once on mount
-    }, []); 
-  
-    
-
-  // Dispatch function to conditionally toggle a property
-    const updateIsItAdmin = async (role: boolean) => {
-     setIsAdmin(role)
-  };
+  }, []); 
 
 
     return (
-      <AuthContext.Provider value={{ updateIsItAdmin, session, loading,  isAdmin  ,profile }}>
+      <AuthContext.Provider value={{session, loading,  isAdmin : profile?.group === 'ADMIN' ,profile }}>
             {children}
       </AuthContext.Provider>)
 

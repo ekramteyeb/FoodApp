@@ -16,13 +16,14 @@ const Index = () => {
   if(!session) {
     return <Redirect href={'/(auth)/log-in'} />
   }
+  if(session && isAdmin) {
+    return <Redirect href={'/(admin)/'} />
+  }
 
   if(!isAdmin) {
     return <Redirect href={'/(user)/'} />
   }
-  if(session && isAdmin) {
-    return <Redirect href={'/(admin)/'} />
-  }
+  
 
 
   

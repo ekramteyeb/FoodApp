@@ -19,7 +19,6 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   //const colorScheme = useColorScheme();
   const { isAdmin } = useAuth()
-  console.log('is admin from admin', isAdmin)
   //if the user is not admin he is not allowed here
   if(!isAdmin) {
     return (<Redirect href={'/'} />)

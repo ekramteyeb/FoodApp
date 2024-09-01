@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text} from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from '@/src/components/Button'
 import { useAuth } from '@/src/providers/AuthProvider'
@@ -12,27 +12,19 @@ import Colors from '@/src/constants/Colors'
 const ProfileScreen = () => {
   const { session } = useAuth()
   
-   // State to trigger re-render
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  // Function to refresh the app when the button is pressed
-  const refreshApp = () => {
-    setRefreshKey(prevKey => prevKey + 1);
-  };
-
+  
   return (
-    <SafeAreaView key={refreshKey} style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Hello ,  {session?.user.email}</Text>
       <Text>{session?.user.role }</Text>
       
       <Link href="/(admin)" asChild>
-              <Pressable onPress={refreshApp}>
+              <Pressable>
                 {({ pressed }) => (
                   <FontAwesome5
                     name="home"
                     size={25}
                     color={Colors.light.tint}
-                    
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }} />
                 )}
               </Pressable>

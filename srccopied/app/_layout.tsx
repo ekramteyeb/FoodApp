@@ -69,6 +69,7 @@ function RootLayoutNav() {
           <QueryProvider>
             <NotificationProvider>
               <CartProvider>
+                
                 <Stack screenOptions={{
                   headerRight: () => (
                     <Link href="/" asChild>

@@ -5,8 +5,6 @@ import Button from '@/src/components/Button'
 import Colors from '@/src/constants/Colors'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { supabase } from '@/src/lib/supabase'
-import { useAuth } from '@/src/providers/AuthProvider'
-
 
 /* interface User {
   id: string;
@@ -20,10 +18,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('')
   const [errorAny, setErrorAny] = useState('')
   const [isloading, setIsloading] = useState(false)
-  
 
-  const { updateIsItAdmin } = useAuth()
-  
   //const [userData, setUserData] = useState<any[]>([]);
   
   const validatePassword = (input: string) => {
@@ -89,16 +84,8 @@ const LoginScreen = () => {
       Alert.alert('Error signing in user: ', error.message);
     } else {
       Alert.alert('User signed in successfully: ');
-      //console.log('User signed in successfully: ', data.user);
-      const newProfile  = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
-      
-      if (newProfile) {
-        console.log(newProfile, 'new Profile')
-        updateIsItAdmin(newProfile.data?.group === 'ADMIN')
-      }
-      
-      console.log('profile  in login', newProfile)
-      // Handle successful sign in
+      console.log('User signed in successfully: ', data.user);
+      // Handle successful sign up
     }
   } catch (error : any) {
     Alert.alert('Error signing in user: ', error.message);

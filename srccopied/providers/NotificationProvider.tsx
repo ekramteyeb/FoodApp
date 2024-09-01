@@ -46,6 +46,8 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
       if (notificationListener.current) {
           responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
           
+            
+          
             console.log(response, 'response ');
           });
         }
