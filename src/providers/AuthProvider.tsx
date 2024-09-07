@@ -26,7 +26,7 @@ const initialState = {
 //Create context 
 
 
-const reducer = (state : AuthData, action: any) => {
+const reducer = (state : AuthData, action : any) => {
       switch (action.type) {
         case 'UPDATE_TOKEN':
           

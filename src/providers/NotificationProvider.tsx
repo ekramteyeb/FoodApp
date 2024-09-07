@@ -29,11 +29,12 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     }
     //upadate the token in the database when there is profile
     if (profile) {
-      console.log('profile updated up on user profile')
+      //console.log('profile updated up on user profile')
       await supabase.from('profiles').update({expo_push_token: newToken}).eq('id', profile.id )
     } else {
+      //or keep the token in state until the user logged in 
       updateToken(newToken)
-      console.log('user not logged in , expo_push token is not updated', newToken)
+      //console.log('user not logged in , expo_push token is not updated', newToken)
     }
     
   }

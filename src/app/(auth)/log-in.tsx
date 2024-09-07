@@ -73,14 +73,25 @@ const LoginScreen = () => {
     if (error) {
       Alert.alert('Error signing up user:', error.message);
     } else {
+      // Handle successful sign up
       Alert.alert('User signed up successfully:');
-      console.log('User signed up successfully:', data);
+      
+      if (data.user) {
+        const { error } = await supabase.from('profiles').update({expo_push_token : expo_push_token}).eq('id',data?.user?.id).single()
+        if (error) {
+          console.log(error,'error while updating the push_token')
+        } 
+           
+      }
       setIsLogin(false)
       setIsloading(false)
-      // Handle successful sign up
+      
     }
-  } catch (error : any ) {
-    Alert.alert('Error signing up user:', error.message);
+    } catch (error: unknown) {
+      if(error instanceof Error)
+        Alert.alert('Error signing up user:', error.message);
+      else
+        console.log('Error while signing up')
   }
   }
   const signin = async () => {
@@ -91,6 +102,7 @@ const LoginScreen = () => {
     if (error) {
       Alert.alert('Error signing in user: ', error.message);
     } else {
+       // Handle successful sign in
       Alert.alert('User signed in successfully: ');
       //console.log('User signed in successfully: ', data.user);
       const { error } = await supabase.from('profiles').update({expo_push_token : expo_push_token}).eq('id',data.user.id).single()
@@ -103,12 +115,14 @@ const LoginScreen = () => {
         console.log(newProfile, 'new Profile')
         updateIsItAdmin(newProfile.data?.group === 'ADMIN')
       }
-      
-      
-      // Handle successful sign in
     }
-  } catch (error : any) {
-    Alert.alert('Error signing in user: ', error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        Alert.alert('Error signing in user: ', error?.message);
+      } else {
+        console.log(error, 'unable to login')
+      }
+        
   }
   }
 
