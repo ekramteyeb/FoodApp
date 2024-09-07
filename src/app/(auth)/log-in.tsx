@@ -5,7 +5,7 @@ import Button from '@/src/components/Button'
 import Colors from '@/src/constants/Colors'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { supabase } from '@/src/lib/supabase'
-import { useAuth } from '@/src/providers/AuthProvider'
+import { useAuth} from '@/src/providers/AuthProvider'
 
 
 /* interface User {
@@ -21,8 +21,9 @@ const LoginScreen = () => {
   const [errorAny, setErrorAny] = useState('')
   const [isloading, setIsloading] = useState(false)
   
+ 
 
-  const { updateIsItAdmin } = useAuth()
+  const { updateIsItAdmin, expo_push_token } = useAuth()
   
   //const [userData, setUserData] = useState<any[]>([]);
   
@@ -83,6 +84,8 @@ const LoginScreen = () => {
   }
   }
   const signin = async () => {
+    
+    
     try {
     const { data , error }  = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
@@ -90,6 +93,10 @@ const LoginScreen = () => {
     } else {
       Alert.alert('User signed in successfully: ');
       //console.log('User signed in successfully: ', data.user);
+      const { error } = await supabase.from('profiles').update({expo_push_token : expo_push_token}).eq('id',data.user.id).single()
+      if (error) {
+        console.log(error,'error while updating the push_token')
+      }
       const newProfile  = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
       
       if (newProfile) {
@@ -97,7 +104,7 @@ const LoginScreen = () => {
         updateIsItAdmin(newProfile.data?.group === 'ADMIN')
       }
       
-      console.log('profile  in login', newProfile)
+      
       // Handle successful sign in
     }
   } catch (error : any) {

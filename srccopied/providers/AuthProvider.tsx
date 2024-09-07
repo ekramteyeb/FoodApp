@@ -44,7 +44,7 @@ export default function AuthProvider({children } : PropsWithChildren){
               .single()
           
           setProfile(data || null)
-          console.log('profile from authProvider', data)
+          
             
         }
       } catch (error) {

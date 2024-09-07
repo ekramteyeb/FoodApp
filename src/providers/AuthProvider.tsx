@@ -1,4 +1,4 @@
-import React, { useState,createContext, PropsWithChildren, useEffect, useContext } from "react";
+import React, { useState,createContext, PropsWithChildren, useEffect, useContext, useReducer } from "react";
 import { supabase } from "../lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { Alert } from "react-native";
@@ -9,7 +9,9 @@ type AuthData  = {
     loading: boolean,
     profile: Tables<'profiles'> | null, 
     isAdmin: boolean,
+    expo_push_token: string ,
     updateIsItAdmin: (role : boolean) => void
+    updateToken: (token:string) => void
 } 
 //initialize the data here 
 const initialState = {
@@ -17,35 +19,41 @@ const initialState = {
     loading: true,
     profile: null ,
     isAdmin: false, 
-    updateIsItAdmin: () => {}
+    expo_push_token: '',
+    updateIsItAdmin: () => {},
+    updateToken: () => {}
 }
 //Create context 
-const AuthContext = createContext<AuthData>(initialState)
 
-/* const reducer = (initialState : AuthData, action: any) => {
+
+const reducer = (state : AuthData, action: any) => {
       switch (action.type) {
-        case 'UPDATE_PROFILE':
-          if (action.profile) {
-            return {
-              ...initialState,
-              profile: action.profile, // Conditionally toggle property1
-            };
-          }
-          return initialState;
+        case 'UPDATE_TOKEN':
+          
+        return {
+          ...state,
+          expo_push_token: action.payload, // Conditionally toggle property1
+        };
 
       default:
-        return initialState;
+        return state;
     }
-}; */
+}; 
 
-  
+// Create context
+export const AuthContext = createContext<AuthData>(initialState)
+
+
 export default function AuthProvider({children } : PropsWithChildren){
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true)
-  const [profile, setProfile] = useState<Tables<'profiles'> | null>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
- 
-    useEffect(() => {
+    const [profile, setProfile] = useState<Tables<'profiles'> | null>(null)
+    const [isAdmin, setIsAdmin] = useState(false)
+  
+      // UseReducer for handling more complex state updates like isAdmin
+    const [state, dispatch] = useReducer(reducer, initialState);
+    
+  useEffect(() => {
     
       const fetchSession = async () => {
       try {
@@ -67,7 +75,7 @@ export default function AuthProvider({children } : PropsWithChildren){
           
           setProfile(data || null)
           setIsAdmin(data?.group === 'ADMIN')
-          console.log('profile from authProvider', data)
+          
             
         }
       } catch (error) {
@@ -92,11 +100,15 @@ export default function AuthProvider({children } : PropsWithChildren){
   // Dispatch function to conditionally toggle a property
     const updateIsItAdmin = async (role: boolean) => {
      setIsAdmin(role)
-  };
+    };
+    
+  const updateToken = (token:string) => {
+      dispatch({type:'UPDATE_TOKEN', payload: token})
+    }
 
 
     return (
-      <AuthContext.Provider value={{ updateIsItAdmin, session, loading,  isAdmin  ,profile }}>
+      <AuthContext.Provider value={{expo_push_token: state.expo_push_token, updateToken, updateIsItAdmin, session, loading,  isAdmin  ,profile }}>
             {children}
       </AuthContext.Provider>)
 

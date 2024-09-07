@@ -10,7 +10,8 @@ import { useAuth } from './AuthProvider'
 
 const NotificationProvider = ({ children }: PropsWithChildren) => {
     
-    const {profile } = useAuth()
+    const { profile, updateToken } = useAuth()
+  
     const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken | string>()
     const [notification, setNotification] = useState<Notifications.Notification | undefined>(
     undefined
@@ -28,7 +29,11 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     }
     //upadate the token in the database when there is profile
     if (profile) {
+      console.log('profile updated up on user profile')
       await supabase.from('profiles').update({expo_push_token: newToken}).eq('id', profile.id )
+    } else {
+      updateToken(newToken)
+      console.log('user not logged in , expo_push token is not updated', newToken)
     }
     
   }
@@ -59,8 +64,6 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     };
 
     }, [profile])
-    console.log(expoPushToken, ' push token')
-    console.log(notification, 'notification')
     return (
     <>
       {children}

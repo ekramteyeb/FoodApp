@@ -2,7 +2,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack, Link } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CartProvider from '@/src/providers/CartProvider'
 import Colors from '../constants/Colors';
 
@@ -30,24 +30,46 @@ SplashScreen.preventAutoHideAsync();
 
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
+  const [fontsLoaded, error] = useFonts({
     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome5.font,
   });
+  const [isReady, setIsReady] = useState(false);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
+   // Handle font loading error
+    if (error) {
+      console.error('Font loading error:', error);
+      setIsReady(true);  // Ensure that splash screen hides even if there is a font error
+    }
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
+   let timeout: string | number | NodeJS.Timeout | undefined;
+
+    // When fonts are loaded or after a timeout, hide the splash screen
+    if (fontsLoaded) {
+      setIsReady(true);
+    } else {
+      // Set a timeout to hide splash screen even if fonts fail to load
+      timeout = setTimeout(() => {
+        console.warn('Font loading timeout reached, hiding splash screen.');
+        setIsReady(true);
+      }, 5000); // 5 seconds timeout
+    }
+
+    return () => clearTimeout(timeout);  // Cleanup the timeout when component unmounts
+  }, [fontsLoaded]);
+
+  useEffect(() => {
+    if (isReady) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [isReady]);
 
-  if (!loaded) {
-    return null;
+  if (!isReady) {
+    return null;  // Keep showing splash screen until ready
   }
 
   return <RootLayoutNav />;

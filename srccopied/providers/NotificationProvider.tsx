@@ -1,7 +1,7 @@
 
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { registerForPushNotificationsAsync } from '@/src/lib/notifications'
-import { ExpoPushToken } from 'expo-notifications'
+//import { ExpoPushToken } from 'expo-notifications'
 import * as Notifications from 'expo-notifications'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './AuthProvider'
@@ -11,7 +11,7 @@ import { useAuth } from './AuthProvider'
 const NotificationProvider = ({ children }: PropsWithChildren) => {
     
     const {profile } = useAuth()
-    const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken | string>()
+    const [expoPushToken, setExpoPushToken] = useState<string>()
     const [notification, setNotification] = useState<Notifications.Notification | undefined>(
     undefined
   );
@@ -19,7 +19,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
     
-  const savePushToken = async (newToken: string) => {
+  const savePushToken = async (newToken: string ) => {
     
     
     setExpoPushToken(newToken ?? '')
@@ -33,9 +33,10 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     
   }
 
-    useEffect(() => {
+    useEffect( () => {
         registerForPushNotificationsAsync()
-        .then((token) => savePushToken(token ?? ''))
+          savePushToken(expoPushToken ?? '')
+          console.log('pushTokenRegistration')
         //.catch((error: any) => setExpoPushToken(`${error}`));
       if (notificationListener.current) {
           notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -47,7 +48,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
           responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
           
             
-          
+            console.log(notification, 'notification')
             console.log(response, 'response ');
           });
         }
@@ -61,8 +62,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     };
 
     }, [profile])
-    console.log(expoPushToken, ' push token')
-    console.log(notification, 'notification')
+    
     return (
     <>
       {children}

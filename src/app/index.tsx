@@ -8,24 +8,19 @@ export default function Index() {
     
     const { session, loading, isAdmin } = useAuth()
 
-    console.log(isAdmin, 'in index app layout')
+    
     // Replace this with actual authentication logic
     
 
-    if (loading) {
-    return <ActivityIndicator />
-  }
-  
-  if(!session) {
-    return <Redirect href={'/(auth)/log-in'} />
-  }
+if (loading) {
+  return <ActivityIndicator />;
+}
 
-  if(!isAdmin) {
-    return <Redirect href={'/(user)/'} />
-  }
-   if(session && isAdmin) {
-    return <Redirect href={'/(admin)/'} />
-  } 
+if (!session) {
+  return <Redirect href={'/(auth)/log-in'} />;
+}
+
+return isAdmin ? <Redirect href={'/(admin)/'} /> : <Redirect href={'/(user)/'} />;
  
   
   return (

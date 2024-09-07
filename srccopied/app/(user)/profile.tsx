@@ -10,7 +10,7 @@ import Colors from '@/src/constants/Colors'
 
 
 const ProfileScreen = () => {
-  const { session } = useAuth()
+  const { session  } = useAuth()
   
   
   return (
