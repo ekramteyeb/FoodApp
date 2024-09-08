@@ -62,13 +62,18 @@ export async function registerForPushNotificationsAsync() {
   }
 }
 
-export async function sendPushNotification(expoPushToken: string, title: string , body: string) {
+export async function sendPushNotification(expoPushToken: string, title: string , body: string, link:string) {
+  
+  const data = {
+    //link: "/notification-detail?id=12345"  // Deep link with a query parameter (id)
+    link: link  // Deep link with a query parameter (id)
+  }
   const message = {
     to: expoPushToken,
     sound: 'default',
     title,
     body,
-    data: { someData: 'goes here' },
+    data,
   };
 
   await fetch('https://exp.host/--/api/v2/push/send', {
@@ -95,8 +100,23 @@ export const notifyUserAboutOrderUpdate = async (order : Tables<'orders'>) => {
   const token = await getUserToken(order.user_id ?? '')
   const title = `Your order is ${order.status}`
   const body = 'You should recieve it in few minutes'
+  //link to notification page
+  const link = `/notification-detail?id=${order.id}`
   
-  await sendPushNotification(token ?? '', title, body)
+  await sendPushNotification(token ?? '', title, body, link)
   
   
+}
+export const notifyAdminsAboutNewOrder = async () => {
+  const admins = await supabase.from('profiles').select('expo_push_token').eq('group', 'ADMIN')
+         
+  const title = 'order recieved'
+  const body = 'body will be displayed later'
+  const link = '/(admin)/orders/'
+
+  admins.data && admins?.data?.map(async (token) => {
+    if (token) {
+      await sendPushNotification(token?.expo_push_token ?? '', title, body, link)
+    }
+  })
 }

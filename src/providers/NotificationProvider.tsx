@@ -1,75 +1,74 @@
-
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { registerForPushNotificationsAsync } from '@/src/lib/notifications'
 import { ExpoPushToken } from 'expo-notifications'
 import * as Notifications from 'expo-notifications'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './AuthProvider'
-
-
+import { useRouter } from 'expo-router'
 
 const NotificationProvider = ({ children }: PropsWithChildren) => {
-    
-    const { profile, updateToken } = useAuth()
-  
-    const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken | string>()
-    const [notification, setNotification] = useState<Notifications.Notification | undefined>(
-    undefined
-  );
-   
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
-    
+  const { profile, updateToken } = useAuth()
+  const router = useRouter()
+
+  const [expoPushToken, setExpoPushToken] = useState<ExpoPushToken | string>()
+  const [notification, setNotification] = useState<Notifications.Notification | undefined>(undefined)
+
+  const notificationListener = useRef<Notifications.Subscription>()
+  const responseListener = useRef<Notifications.Subscription>()
+
   const savePushToken = async (newToken: string) => {
-    
-    
     setExpoPushToken(newToken ?? '')
+
     if (!newToken) {
       return
     }
-    //upadate the token in the database when there is profile
+
+    // Update the token in the database when the user has a profile
     if (profile) {
-      //console.log('profile updated up on user profile')
-      await supabase.from('profiles').update({expo_push_token: newToken}).eq('id', profile.id )
+      await supabase.from('profiles').update({ expo_push_token: newToken }).eq('id', profile.id)
     } else {
-      //or keep the token in state until the user logged in 
+      // Keep the token in state until the user logs in
       updateToken(newToken)
-      //console.log('user not logged in , expo_push token is not updated', newToken)
     }
-    
   }
 
-    useEffect(() => {
-        registerForPushNotificationsAsync()
-        .then((token) => savePushToken(token ?? ''))
-        //.catch((error: any) => setExpoPushToken(`${error}`));
-      if (notificationListener.current) {
-          notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-          setNotification(notification);
-        });
-        }
-        
-      if (notificationListener.current) {
-          responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          
-            console.log(response, 'response ');
-          });
-        }
-        
-        
-        return () => {
-            notificationListener.current &&
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            responseListener.current &&
-            Notifications.removeNotificationSubscription(responseListener.current);
-    };
+  useEffect(() => {
+    // Register for push notifications and save the token
+    registerForPushNotificationsAsync()
+      .then((token) => savePushToken(token ?? ''))
 
-    }, [profile])
-    return (
-    <>
-      {children}
-    </>
-  )
+    // Register the notification received listener
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      console.log('Notification received:', notification)
+      setNotification(notification)
+    })
+
+    // Register the notification response listener (for when a notification is clicked)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      const data = response.notification.request.content.data
+
+      if (data && data.link) {
+        // Navigate to the deep link passed in the notification's data
+        router.push(data.link)
+      }
+
+      console.log('Notification response:', response)
+      console.log('Notification response:', notification)
+      
+    })
+
+    // Clean up listeners on component unmount
+    return () => {
+      if (notificationListener.current) {
+        Notifications.removeNotificationSubscription(notificationListener.current)
+      }
+      if (responseListener.current) {
+        Notifications.removeNotificationSubscription(responseListener.current)
+      }
+    }
+  }, [notification])
+
+  return <>{children}</>
 }
 
 export default NotificationProvider

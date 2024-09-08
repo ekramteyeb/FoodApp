@@ -8,8 +8,6 @@ import CartListItem from '../components/CartListItem'
 import { useRouter } from 'expo-router'
 
 
-
-
 const CartScreen = () => {
   
   const { items, total } = useContext(CartContext)
@@ -30,7 +28,7 @@ const CartScreen = () => {
         contentContainerStyle={{ gap: 10}} //horizontal gap
       />
       
-      <Text style={styles.total}>{items.length > 0 ? `Total : $ ${total.toFixed(2)}` : '0 items selected'} </Text>
+      <Text style={styles.total}>{items.length > 0 ? `Total  : $ ${total.toFixed(2)}` : '0 items selected'} </Text>
       
       { items.length > 0 ?
         <Button text='Checkout' onPress={checkout} /> :

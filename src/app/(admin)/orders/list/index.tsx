@@ -1,10 +1,8 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text } from 'react-native';
-import React, { useEffect } from 'react';
+import { ActivityIndicator, FlatList, Text } from 'react-native';
+import React from 'react';
 
 import OrderListItem from '@/src/components/OrderListItem';
 import { useOrdersAdminList } from '@/src/api/orders';
-import { supabase } from '@/src/lib/supabase';
-import { useQueryClient } from 'react-query';
 import { useInsertOrderSubscription } from '@/src/api/orders/subscriptions';
 
 
@@ -35,19 +33,3 @@ export default function OrderScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});

@@ -7,8 +7,7 @@ import { useInsertOrder } from "../api/orders";
 import { Tables } from "../supabase-types";
 import { useInsertOrderItems } from "../api/order-items";
 import { initialisePaymentSheet, openPaymentSheet } from "../lib/stripe";
-import { sendPushNotification } from "../lib/notifications";
-import { supabase } from "../lib/supabase";
+import { notifyAdminsAboutNewOrder } from "../lib/notifications";
 
 
 
@@ -108,16 +107,7 @@ const CartProvider = ({ children } : PropsWithChildren ) => {
       orderItems,
       {
         onSuccess: async () => {
-          const admins = await supabase.from('profiles').select('expo_push_token').eq('group', 'ADMIN')
-          console.log(admins, 'admins on cartProvider ')
-          const title = 'order recieved'
-          const body = 'body will be displayed later'
-
-          admins.data && admins?.data?.map(async (token) => {
-            if (token) {
-             await sendPushNotification(token?.expo_push_token, title, body)
-           }
-          })
+          await notifyAdminsAboutNewOrder()
           
           clearCart()
           //router.push(`/(user)/orders/${order.id}`)

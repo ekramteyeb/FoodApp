@@ -29,7 +29,7 @@ const LoginScreen = () => {
   
   const validatePassword = (input: string) => {
     const rules = input.split(';');
-    for (let rule of rules) {
+    for (const rule of rules) {
       const [type, value] = rule.split(':').map(str => str.trim());
       switch (type) {
         case 'required':
