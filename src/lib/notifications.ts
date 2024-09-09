@@ -101,7 +101,9 @@ export const notifyUserAboutOrderUpdate = async (order : Tables<'orders'>) => {
   const title = `Your order is ${order.status}`
   const body = 'You should recieve it in few minutes'
   //link to notification page
-  const link = `/notification-detail?id=${order.id}`
+  const orderString = encodeURIComponent(JSON.stringify(order));
+  
+  const link = `/notification-detail?id=${order.id}&order=${orderString}`
   
   await sendPushNotification(token ?? '', title, body, link)
   
